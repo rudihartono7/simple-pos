@@ -91,7 +91,7 @@ definePageMeta({
   layout: 'auth'
 })
 
-const { login, isAuthenticated } = useAuth()
+const { login, isAuthenticated, isInitialized } = useAuth()
 
 const credentials = ref({
   email: 'admin@possystem.com',
@@ -101,10 +101,22 @@ const credentials = ref({
 const loading = ref(false)
 const error = ref('')
 
-// Redirect if already authenticated
-watchEffect(() => {
+// Redirect if already authenticated - only on client side
+onMounted(async () => {
+  // Wait for auth to be initialized
+  if (!isInitialized.value) {
+    await new Promise(resolve => {
+      const unwatch = watch(isInitialized, (initialized) => {
+        if (initialized) {
+          unwatch()
+          resolve(true)
+        }
+      }, { immediate: true })
+    })
+  }
+  
   if (isAuthenticated.value) {
-    console.log('Already authenticated, redirecting to /dashboard', isAuthenticated.value)
+    console.log('Already authenticated, redirecting to /dashboard')
     navigateTo('/dashboard', { replace: true })
   }
 })
@@ -116,28 +128,12 @@ const handleLogin = async () => {
   try {
     const success = await login(credentials.value)
     if (success) {
-      // Login was successful, wait for user state to be set
-      console.log('Login successful, waiting for user state...')
+      console.log('Login successful, redirecting to dashboard...')
       
-      // Wait for the user state to be properly set
-      await new Promise(resolve => {
-        const unwatch = watch(isAuthenticated, (newValue) => {
-          if (newValue) {
-            console.log('User authenticated, redirecting to dashboard...')
-            //unwatch()
-            resolve(true)
-          }
-        }, { immediate: true })
-        
-        // Fallback timeout
-        setTimeout(() => {
-          console.log('Timeout reached, forcing redirect...')
-          unwatch()
-          resolve(true)
-        }, 1000)
-      })
+      // Small delay to ensure state is updated
+      await new Promise(resolve => setTimeout(resolve, 100))
       
-      await navigateTo('/dashboard', { replace: true, external: false })
+      await navigateTo('/dashboard', { replace: true })
     } else {
       error.value = 'Invalid email or password. Please check your credentials and try again.'
     }

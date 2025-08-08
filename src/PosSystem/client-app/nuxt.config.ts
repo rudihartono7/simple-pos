@@ -31,6 +31,9 @@ export default defineNuxtConfig({
     https: false
   },
 
+  // Production build configuration
+  ssr: false, // Ensure SPA mode for production
+  
   // Disable automatic HTTPS redirects
   nitro: {
     devProxy: {

@@ -238,10 +238,29 @@ app.UseWhen(
   app.UseSpaStaticFiles();
   app.UseSpa(spa =>
   {
+    spa.Options.SourcePath = "client-app";
+    
     if (builder.Environment.IsDevelopment())
     {
-        spa.Options.SourcePath = "client-app";
         spa.UseNuxtDevelopmentServer();
+    }
+    else
+    {
+        // Production configuration - serve the built Nuxt app
+        spa.Options.DefaultPage = "/index.html";
+        spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+        {
+            OnPrepareResponse = ctx =>
+            {
+                // Prevent caching of the main index.html file
+                if (ctx.File.Name.Equals("index.html", StringComparison.OrdinalIgnoreCase))
+                {
+                    ctx.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
+                    ctx.Context.Response.Headers.Append("Pragma", "no-cache");
+                    ctx.Context.Response.Headers.Append("Expires", "0");
+                }
+            }
+        };
     }
   });
 });

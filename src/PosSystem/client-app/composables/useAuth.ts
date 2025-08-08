@@ -21,22 +21,62 @@ interface LoginResponse {
   user: User
 }
 
+// Global state to ensure single instance
+const globalUser = ref<User | null>(null)
+const globalToken = useCookie<string | null>('auth-token', {
+  default: () => null,
+  secure: false,
+  sameSite: 'lax'
+})
+const globalAuthLoading = ref(false)
+const globalAuthInitialized = ref(false)
+
+// Initialize user data immediately when token exists
+const initializeAuth = async () => {
+  if (process.client && globalToken.value && !globalUser.value && !globalAuthInitialized.value) {
+    globalAuthLoading.value = true
+    try {
+      const config = useRuntimeConfig()
+      const userData = await $fetch<User>('/api/auth/current-user', {
+        headers: {
+          Authorization: `Bearer ${globalToken.value}`
+        },
+        baseURL: config.public.apiBase
+      })
+      
+      globalUser.value = userData
+      console.log('Auth initialized with user:', userData)
+    } catch (error) {
+      console.error('Failed to initialize auth:', error)
+      globalToken.value = null
+      globalUser.value = null
+    } finally {
+      globalAuthLoading.value = false
+      globalAuthInitialized.value = true
+    }
+  } else if (process.client && !globalToken.value) {
+    globalAuthInitialized.value = true
+  }
+}
+
+// Initialize immediately
+if (process.client) {
+  initializeAuth()
+}
+
 export const useAuth = () => {
   const config = useRuntimeConfig()
-  const user = ref<User | null>(null)
-  const token = useCookie<string | null>('auth-token', {
-    default: () => null,
-    secure: false, // Changed to false for development
-    sameSite: 'lax' // Changed to lax for better compatibility
-  })
 
   const isAuthenticated = computed(() => {
-    const hasToken = !!token.value
-    const hasUser = !!user.value
+    const hasToken = !!globalToken.value
+    const hasUser = !!globalUser.value
     const result = hasToken && hasUser
     console.log('isAuthenticated computed - token:', hasToken, 'user:', hasUser, 'result:', result)
     return result
   })
+
+  const isLoading = computed(() => globalAuthLoading.value)
+  const isInitialized = computed(() => globalAuthInitialized.value)
 
   const login = async (credentials: LoginCredentials): Promise<boolean> => {
     try {
@@ -46,16 +86,14 @@ export const useAuth = () => {
         baseURL: config.public.apiBase
       })
 
-
       console.log('Login response:', response)
 
-      token.value = response.token as string | null
-      user.value = response.user
+      globalToken.value = response.token as string | null
+      globalUser.value = response.user
+      globalAuthInitialized.value = true
 
-      console.log('value of user:', user.value)
-
-      console.log('Login successful, token:', token.value, 'user:', user.value)
-      console.log('isAuthenticated after login:', !!token.value && !!user.value)
+      console.log('Login successful, token:', globalToken.value, 'user:', globalUser.value)
+      console.log('isAuthenticated after login:', !!globalToken.value && !!globalUser.value)
       
       return true
     } catch (error) {
@@ -66,11 +104,11 @@ export const useAuth = () => {
 
   const logout = async () => {
     try {
-      if (token.value) {
+      if (globalToken.value) {
         await $fetch('/api/auth/logout', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${token.value}`
+            Authorization: `Bearer ${globalToken.value}`
           },
           baseURL: config.public.apiBase
         })
@@ -78,47 +116,39 @@ export const useAuth = () => {
     } catch (error) {
       console.error('Logout error:', error)
     } finally {
-      token.value = null
-      user.value = null
+      globalToken.value = null
+      globalUser.value = null
       await navigateTo('/login')
     }
   }
 
   const getCurrentUser = async () => {
-    if (!token.value) return null
+    if (!globalToken.value) return null
 
     try {
       const userData = await $fetch<User>('/api/auth/current-user', {
         headers: {
-          Authorization: `Bearer ${token.value}`
+          Authorization: `Bearer ${globalToken.value}`
         },
         baseURL: config.public.apiBase
       })
       
-      user.value = userData
+      globalUser.value = userData
       return userData
     } catch (error) {
       console.error('Failed to get current user:', error)
-      token.value = null
-      user.value = null
+      globalToken.value = null
+      globalUser.value = null
       return null
     }
   }
 
-  // Initialize user on composable creation
-  onMounted(async () => {
-    console.log('useAuth onMounted - token:', token.value, 'user:', user.value)
-    if (token.value && !user.value) {
-      console.log('Token exists but no user, fetching current user...')
-      await getCurrentUser()
-      console.log('After getCurrentUser - user:', user.value, 'isAuthenticated:', !!token.value && !!user.value)
-    }
-  })
-
   return {
-    user: readonly(user),
-    token: readonly(token),
+    user: readonly(globalUser),
+    token: readonly(globalToken),
     isAuthenticated,
+    isLoading,
+    isInitialized,
     login,
     logout,
     getCurrentUser

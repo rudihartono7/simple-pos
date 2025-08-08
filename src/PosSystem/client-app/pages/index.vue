@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
-// Redirect to dashboard page
-await navigateTo('/dashboard', { replace: true })
+// Only redirect on client-side to prevent server-side redirect loops
+if (process.client) {
+  await navigateTo('/dashboard', { replace: true })
+}
 </script>
