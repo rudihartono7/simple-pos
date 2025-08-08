@@ -13,7 +13,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:5001'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || ''
     }
   },
 
@@ -38,7 +38,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/api': {
-        target: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:5001',
+        target: process.env.NUXT_PUBLIC_API_BASE || '',
         secure: false,
         changeOrigin: true
       }
