@@ -228,21 +228,24 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Configure SPA - this should come after API routing
-if (app.Environment.IsDevelopment())
-{
-    // Only use SPA proxy in development and only for non-API routes
-    app.MapWhen(context =>
+app.MapStaticAssets();
+app.UseStaticFiles();
+app.UseWhen(
+    static context => 
     !context.Request.Path.StartsWithSegments("/api") && 
-    !context.Request.Path.StartsWithSegments("/uploads"), appBuilder =>
+    !context.Request.Path.StartsWithSegments("/uploads"), app =>
+{
+  app.UseSpaStaticFiles();
+  app.UseSpa(spa =>
+  {
+    if (builder.Environment.IsDevelopment())
     {
-        appBuilder.UseSpa(spa =>
-        {
-            spa.Options.SourcePath = "client-app";
-            spa.UseNuxtDevelopmentServer();
-        });
-    });
-}
+        spa.Options.SourcePath = "client-app";
+        spa.UseNuxtDevelopmentServer();
+    }
+  });
+});
+
 
 // Ensure database is created and seed initial data
 try
