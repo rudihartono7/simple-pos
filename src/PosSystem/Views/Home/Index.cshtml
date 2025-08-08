@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POS System API</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .api-info {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .endpoint-list {
+            list-style: none;
+            padding: 0;
+        }
+        .endpoint-list li {
+            background: #f8f9fa;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+        }
+        .method {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>POS System API</h1>
+        
+        <div class="api-info">
+            <h3>Welcome to the POS System API</h3>
+            <p>This is a comprehensive Point of Sale system API built with ASP.NET Core.</p>
+            <p>The API provides endpoints for managing products, transactions, customers, and more.</p>
+        </div>
+
+        <h3>Available API Endpoints:</h3>
+        <ul class="endpoint-list">
+            <li><span class="method">GET/POST</span> /api/auth - Authentication endpoints</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/product - Product management</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/category - Category management</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/customer - Customer management</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/transaction - Transaction management</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/promotion - Promotion management</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/store - Store management</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/usermanagement - User management</li>
+            <li><span class="method">GET</span> /api/report - Reporting endpoints</li>
+            <li><span class="method">GET/POST</span> /api/audit - Audit log endpoints</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/systemsetting - System settings</li>
+            <li><span class="method">GET/POST/PUT/DELETE</span> /api/stockmovement - Stock movement tracking</li>
+            <li><span class="method">POST</span> /api/print - Printing services</li>
+        </ul>
+
+        <div class="api-info">
+            <h4>Getting Started:</h4>
+            <p>1. Use the authentication endpoints to get a JWT token</p>
+            <p>2. Include the token in the Authorization header for protected endpoints</p>
+            <p>3. All API endpoints return JSON responses</p>
+        </div>
+    </div>
+</body>
+</html>
