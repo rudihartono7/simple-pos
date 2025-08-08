@@ -39,6 +39,13 @@ export default defineNuxtConfig({
         secure: false,
         changeOrigin: true
       }
+    },
+    // Exclude native modules that cause build issues in Docker
+    experimental: {
+      wasm: false
+    },
+    rollupConfig: {
+      external: ['better-sqlite3']
     }
   }
 })
