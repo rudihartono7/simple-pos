@@ -26,8 +26,9 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
     <PackageReference Include="Serilog.Sinks.PostgreSQL" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="9.0.3" />
-    <!-- NetBarcode for generating barcode on receipt -->
-    <PackageReference Include="NetBarcode" Version="2.0.0-beta" />
+    <!-- ZXing.Net for generating barcode on receipt (cross-platform compatible) -->
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
   </ItemGroup>
 
   <ItemGroup>

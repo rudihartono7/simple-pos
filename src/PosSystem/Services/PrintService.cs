@@ -1,7 +1,10 @@
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
-using NetBarcode;
+using ZXing;
+using ZXing.Common;
+using ZXing.SkiaSharp;
+using SkiaSharp;
 using PosSystem.Data;
 using PosSystem.Models;
 
@@ -98,7 +101,7 @@ namespace PosSystem.Services
                 throw new ArgumentException("Transaction not found");
 
             var payment = transaction.Payments.FirstOrDefault();
-            var barcode = new Barcode(transaction.TransactionNumber, NetBarcode.Type.Code128, true, 300, 50);
+            var barcodeBase64 = GenerateBarcodeBase64(transaction.TransactionNumber);
             var receiptFooter = await _systemSettingService.GetSettingValueAsync("ReceiptFooter");
 
             return new ReceiptData
@@ -129,7 +132,7 @@ namespace PosSystem.Services
                 ChangeAmount = payment?.ChangeAmount ?? 0,
                 PaymentMethod = payment?.PaymentMethod ?? "Cash",
                 Notes = transaction.Notes,
-                BarcodeBase64 = barcode.GetBase64Image(),
+                BarcodeBase64 = barcodeBase64,
                 ReceiptFooter = receiptFooter
             };
         }
@@ -326,7 +329,35 @@ namespace PosSystem.Services
 
             return html;
         }
+
+        private string GenerateBarcodeBase64(string text)
+        {
+            try
+            {
+                var writer = new BarcodeWriter
+                {
+                    Format = BarcodeFormat.CODE_128,
+                    Options = new EncodingOptions
+                    {
+                        Width = 300,
+                        Height = 50,
+                        Margin = 0
+                    }
+                };
+
+                using var bitmap = writer.Write(text);
+                using var image = SKImage.FromBitmap(bitmap);
+                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+                
+                var base64 = Convert.ToBase64String(data.ToArray());
+                return $"data:image/png;base64,{base64}";
+            }
+            catch (Exception ex)
+            {
+                // Log the error and return a fallback
+                Console.WriteLine($"Error generating barcode: {ex.Message}");
+                return $"data:text/plain;base64,{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(text))}";
+            }
+        }
     }
-
-
 }
