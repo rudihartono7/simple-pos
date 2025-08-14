@@ -232,6 +232,7 @@ app.MapStaticAssets();
 app.UseStaticFiles();
 app.UseWhen(
     static context => 
+    !context.Request.Path.StartsWithSegments("/") && 
     !context.Request.Path.StartsWithSegments("/api") && 
     !context.Request.Path.StartsWithSegments("/uploads"), app =>
 {

@@ -1,84 +1,482 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>POS System API</title>
+    <title>POS System - Solusi Kasir Modern untuk Bisnis Anda</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sistem POS modern dan lengkap untuk mengelola bisnis retail Anda dengan mudah dan efisien." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            padding: 0;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #000000;
+            background-color: #F1EFE9;
+        }
+        
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #C8161D 0%, #000000 100%);
+            color: #FFFFFF;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .api-info {
-            background: #e8f4fd;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        .endpoint-list {
-            list-style: none;
-            padding: 0;
-        }
-        .endpoint-list li {
-            background: #f8f9fa;
-            margin: 5px 0;
-            padding: 10px;
-            border-left: 4px solid #007bff;
-        }
-        .method {
+        
+        .logo {
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #007bff;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #FFCA40;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #C8161D 0%, #000000 100%);
+            color: #FFFFFF;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #FFCA40;
+            color: #000000;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 202, 64, 0.3);
+        }
+        
+        .cta-button:hover {
+            background: #e6b536;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 202, 64, 0.4);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: #FFFFFF;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #000000;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: #F1EFE9;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid #D9D9D9;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #000000;
+        }
+        
+        .feature-card p {
+            color: #808080;
+            line-height: 1.6;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 80px 0;
+            background: #F1EFE9;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: #FFFFFF;
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            border: 2px solid #D9D9D9;
+            transition: all 0.3s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        
+        .pricing-card.featured {
+            border-color: #C8161D;
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.featured::before {
+            content: 'POPULER';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #C8161D;
+            color: #FFFFFF;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #000000;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #C8161D;
+            margin-bottom: 1rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .pricing-features li:before {
+            content: '✓';
+            color: #FFCA40;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .pricing-button {
+            display: inline-block;
+            background: #C8161D;
+            color: #FFFFFF;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .pricing-button:hover {
+            background: #a01218;
+            transform: translateY(-2px);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #C8161D 0%, #000000 100%);
+            color: #FFFFFF;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .whatsapp-button {
+            display: inline-block;
+            background: #FFCA40;
+            color: #000000;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 202, 64, 0.3);
+        }
+        
+        .whatsapp-button:hover {
+            background: #e6b536;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 202, 64, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background: #000000;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>POS System API</h1>
-        
-        <div class="api-info">
-            <h3>Welcome to the POS System API</h3>
-            <p>This is a comprehensive Point of Sale system API built with ASP.NET Core.</p>
-            <p>The API provides endpoints for managing products, transactions, customers, and more.</p>
-        </div>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">POS System</div>
+            <ul class="nav-links">
+                <li><a href="#features">Fitur</a></li>
+                <li><a href="#pricing">Harga</a></li>
+                <li><a href="#contact">Kontak</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <h3>Available API Endpoints:</h3>
-        <ul class="endpoint-list">
-            <li><span class="method">GET/POST</span> /api/auth - Authentication endpoints</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/product - Product management</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/category - Category management</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/customer - Customer management</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/transaction - Transaction management</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/promotion - Promotion management</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/store - Store management</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/usermanagement - User management</li>
-            <li><span class="method">GET</span> /api/report - Reporting endpoints</li>
-            <li><span class="method">GET/POST</span> /api/audit - Audit log endpoints</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/systemsetting - System settings</li>
-            <li><span class="method">GET/POST/PUT/DELETE</span> /api/stockmovement - Stock movement tracking</li>
-            <li><span class="method">POST</span> /api/print - Printing services</li>
-        </ul>
-
-        <div class="api-info">
-            <h4>Getting Started:</h4>
-            <p>1. Use the authentication endpoints to get a JWT token</p>
-            <p>2. Include the token in the Authorization header for protected endpoints</p>
-            <p>3. All API endpoints return JSON responses</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Sistem POS Modern</h1>
+            <p>Kelola bisnis retail Anda dengan mudah dan efisien menggunakan sistem POS terdepan</p>
+            <a href="/login" class="cta-button">Coba Sekarang</a>
         </div>
-    </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Fitur Unggulan</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛒</div>
+                    <h3>Manajemen Produk</h3>
+                    <p>Kelola inventori, kategori, dan harga produk dengan mudah. Sistem tracking stok otomatis dan alert ketika stok menipis.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Transaksi Cepat</h3>
+                    <p>Proses transaksi yang cepat dan akurat dengan berbagai metode pembayaran. Mendukung cash, kartu, dan e-wallet.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Laporan Real-time</h3>
+                    <p>Dashboard analitik lengkap dengan laporan penjualan, profit, dan performa bisnis secara real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Manajemen Customer</h3>
+                    <p>Database pelanggan terintegrasi dengan program loyalitas dan promosi untuk meningkatkan retention.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖨️</div>
+                    <h3>Cetak Struk Otomatis</h3>
+                    <p>Cetak struk dan invoice secara otomatis dengan template yang dapat disesuaikan sesuai brand Anda.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Keamanan Terjamin</h3>
+                    <p>Sistem keamanan berlapis dengan enkripsi data, audit trail, dan kontrol akses berbasis role.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Paket Harga</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Source Code</h3>
+                    <div class="price">Rp x.xjt</div>
+                    <ul class="pricing-features">
+                        <li>Source code lengkap</li>
+                        <li>Database schema</li>
+                        <li>Basic setup guide</li>
+                        <li>Semua fitur POS</li>
+                        <li>Self-hosted</li>
+                    </ul>
+                    <a href="#contact" class="pricing-button">Pilih Paket</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3>Source + Dokumentasi</h3>
+                    <div class="price">Rp xjt</div>
+                    <ul class="pricing-features">
+                        <li>Semua dari paket Source Code</li>
+                        <li>Dokumentasi lengkap API</li>
+                        <li>User manual</li>
+                        <li>Technical documentation</li>
+                        <li>Architecture guide</li>
+                        <li>Customization guide</li>
+                    </ul>
+                    <a href="#contact" class="pricing-button">Pilih Paket</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Complete Package</h3>
+                    <div class="price">Rp xx.xjt</div>
+                    <ul class="pricing-features">
+                        <li>Semua dari paket sebelumnya</li>
+                        <li>Deployment guideline</li>
+                        <li>Server setup assistance</li>
+                        <li>3 bulan support teknis</li>
+                        <li>Training session</li>
+                        <li>Maintenance guide</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="#contact" class="pricing-button">Pilih Paket</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <h2>Siap Memulai?</h2>
+            <p>Hubungi kami sekarang untuk konsultasi gratis dan demo sistem POS</p>
+            <a href="https://wa.me/6282129290963?text=Halo,%20saya%20tertarik%20dengan%20sistem%20POS%20Anda.%20Bisa%20minta%20informasi%20lebih%20lanjut?" class="whatsapp-button" target="_blank">
+                📱 Hubungi via WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 POS System. Semua hak cipta dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(200, 22, 29, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, #C8161D 0%, #000000 100%)';
+                header.style.backdropFilter = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
