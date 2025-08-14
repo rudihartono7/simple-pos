@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PosSystem.Data;
 using PosSystem.Models;
+using PosSystem.Constants;
 
 namespace PosSystem.Services
 {
@@ -80,20 +81,27 @@ namespace PosSystem.Services
 
             var oldStock = product.StockQuantity;
             
-            switch (movementType.ToLower())
+            var upperMovementType = movementType.ToUpper();
+            
+            // Stock increase operations
+            if (upperMovementType == MovementTypes.STOCK_IN_LEGACY.ToUpper() ||
+                upperMovementType == MovementTypes.RETURN.ToUpper() ||
+                upperMovementType == MovementTypes.ADJUSTMENT.ToUpper() ||
+                upperMovementType == MovementTypes.IN.ToUpper())
             {
-                case "stockin":
-                case "return":
-                case "adjustment":
-                    product.StockQuantity += quantity;
-                    break;
-                case "stockout":
-                case "sale":
-                    if (product.StockQuantity < quantity) return false;
-                    product.StockQuantity -= quantity;
-                    break;
-                default:
-                    return false;
+                product.StockQuantity += quantity;
+            }
+            // Stock decrease operations
+            else if (upperMovementType == MovementTypes.STOCK_OUT_LEGACY.ToUpper() ||
+                     upperMovementType == MovementTypes.SALE.ToUpper() ||
+                     upperMovementType == MovementTypes.OUT.ToUpper())
+            {
+                if (product.StockQuantity < quantity) return false;
+                product.StockQuantity -= quantity;
+            }
+            else
+            {
+                return false;
             }
 
             product.UpdatedAt = DateTime.UtcNow;

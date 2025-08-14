@@ -53,16 +53,19 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Movement Type</label>
               <select
-                v-model="movementTypeFilter"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              >
-                <option value="">All Movement Types</option>
-                <option value="IN">Stock In</option>
-                <option value="OUT">Stock Out</option>
-                <option value="ADJUSTMENT">Adjustment</option>
-                <option value="TRANSFER">Transfer</option>
-                <option value="RETURN">Return</option>
-              </select>
+              v-model="movementTypeFilter"
+              @change="loadMovements"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            >
+              <option value="">All Types</option>
+              <option :value="MOVEMENT_TYPES.IN">Stock In</option>
+              <option :value="MOVEMENT_TYPES.OUT">Stock Out</option>
+              <option :value="MOVEMENT_TYPES.ADJUSTMENT">Adjustment</option>
+              <option :value="MOVEMENT_TYPES.TRANSFER">Transfer</option>
+              <option :value="MOVEMENT_TYPES.RETURN">Return</option>
+              <option :value="MOVEMENT_TYPES.RESERVE">Reserve</option>
+              <option :value="MOVEMENT_TYPES.UNRESERVE">Unreserve</option>
+            </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Product ID</label>
@@ -269,13 +272,13 @@
                 required
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="">Select movement type</option>
-                <option value="IN">Stock In</option>
-                <option value="OUT">Stock Out</option>
-                <option value="ADJUSTMENT">Adjustment</option>
-                <option value="TRANSFER">Transfer</option>
-                <option value="RETURN">Return</option>
-              </select>
+              <option value="">Select Movement Type</option>
+              <option :value="MOVEMENT_TYPES.IN">Stock In</option>
+              <option :value="MOVEMENT_TYPES.OUT">Stock Out</option>
+              <option :value="MOVEMENT_TYPES.ADJUSTMENT">Adjustment</option>
+              <option :value="MOVEMENT_TYPES.TRANSFER">Transfer</option>
+              <option :value="MOVEMENT_TYPES.RETURN">Return</option>
+            </select>
             </div>
             
             <div>
@@ -327,6 +330,17 @@
 definePageMeta({
   middleware: 'auth'
 })
+
+// Movement Types Constants (matching MovementTypes.cs)
+const MOVEMENT_TYPES = {
+  IN: 'IN',
+  OUT: 'OUT',
+  ADJUSTMENT: 'ADJUSTMENT',
+  TRANSFER: 'TRANSFER',
+  RETURN: 'RETURN',
+  RESERVE: 'RESERVE',
+  UNRESERVE: 'UNRESERVE'
+} as const
 
 const { showError } = useAlert()
 
@@ -509,33 +523,33 @@ const recordMovement = async () => {
 
 const getMovementTypeColor = (type: string) => {
   const colors = {
-    'IN': 'bg-green-600',
-    'OUT': 'bg-red-600',
-    'ADJUSTMENT': 'bg-yellow-600',
-    'TRANSFER': 'bg-blue-600',
-    'RETURN': 'bg-purple-600'
+    [MOVEMENT_TYPES.IN]: 'bg-green-600',
+    [MOVEMENT_TYPES.OUT]: 'bg-red-600',
+    [MOVEMENT_TYPES.ADJUSTMENT]: 'bg-yellow-600',
+    [MOVEMENT_TYPES.TRANSFER]: 'bg-blue-600',
+    [MOVEMENT_TYPES.RETURN]: 'bg-purple-600'
   }
   return colors[type as keyof typeof colors] || 'bg-gray-600'
 }
 
 const getMovementTypeBadgeColor = (type: string) => {
   const colors = {
-    'IN': 'bg-green-100 text-green-800',
-    'OUT': 'bg-red-100 text-red-800',
-    'ADJUSTMENT': 'bg-yellow-100 text-yellow-800',
-    'TRANSFER': 'bg-blue-100 text-blue-800',
-    'RETURN': 'bg-purple-100 text-purple-800'
+    [MOVEMENT_TYPES.IN]: 'bg-green-100 text-green-800',
+    [MOVEMENT_TYPES.OUT]: 'bg-red-100 text-red-800',
+    [MOVEMENT_TYPES.ADJUSTMENT]: 'bg-yellow-100 text-yellow-800',
+    [MOVEMENT_TYPES.TRANSFER]: 'bg-blue-100 text-blue-800',
+    [MOVEMENT_TYPES.RETURN]: 'bg-purple-100 text-purple-800'
   }
   return colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800'
 }
 
 const getMovementTypeName = (type: string) => {
   const names = {
-    'IN': 'Stock In',
-    'OUT': 'Stock Out',
-    'ADJUSTMENT': 'Adjustment',
-    'TRANSFER': 'Transfer',
-    'RETURN': 'Return'
+    [MOVEMENT_TYPES.IN]: 'Stock In',
+    [MOVEMENT_TYPES.OUT]: 'Stock Out',
+    [MOVEMENT_TYPES.ADJUSTMENT]: 'Adjustment',
+    [MOVEMENT_TYPES.TRANSFER]: 'Transfer',
+    [MOVEMENT_TYPES.RETURN]: 'Return'
   }
   return names[type as keyof typeof names] || type
 }

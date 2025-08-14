@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PosSystem.Data;
 using PosSystem.Models;
+using PosSystem.Constants;
 
 namespace PosSystem.Services
 {
@@ -172,7 +173,7 @@ namespace PosSystem.Services
                     {
                         ProductId = item.ProductId,
                         ProductVariantId = item.ProductVariantId,
-                        MovementType = "Sale",
+                        MovementType = MovementTypes.SALE,
                         Quantity = item.Quantity,
                         ReferenceId = transactionId,
                         ReferenceType = "Transaction",
@@ -239,7 +240,7 @@ namespace PosSystem.Services
                     {
                         ProductId = item.ProductId,
                         ProductVariantId = item.ProductVariantId,
-                        MovementType = "Return",
+                        MovementType = MovementTypes.RETURN,
                         Quantity = item.Quantity,
                         ReferenceId = transactionId,
                         ReferenceType = "Transaction",

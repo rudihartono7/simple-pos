@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PosSystem.Services;
 using PosSystem.Models;
 using PosSystem.Attributes;
+using PosSystem.Constants;
 using System.Security.Claims;
 
 namespace PosSystem.Controllers
@@ -87,10 +88,9 @@ namespace PosSystem.Controllers
             try
             {
                 // Validate movement type
-                var validTypes = new[] { "IN", "OUT", "ADJUSTMENT", "TRANSFER", "RETURN" };
-                if (!validTypes.Contains(movementType.ToUpper()))
+                if (!MovementTypes.ValidTypes.Contains(movementType.ToUpper()))
                 {
-                    return BadRequest(new { message = "Invalid movement type. Valid types are: " + string.Join(", ", validTypes) });
+                    return BadRequest(new { message = "Invalid movement type. Valid types are: " + string.Join(", ", MovementTypes.ValidTypes) });
                 }
 
                 var movements = await _stockMovementService.GetMovementsByTypeAsync(movementType.ToUpper());
@@ -123,10 +123,9 @@ namespace PosSystem.Controllers
                 }
                 else if (!string.IsNullOrEmpty(movementType))
                 {
-                    var validTypes = new[] { "IN", "OUT", "ADJUSTMENT", "TRANSFER", "RETURN" };
-                    if (!validTypes.Contains(movementType.ToUpper()))
+                    if (!MovementTypes.ValidTypes.Contains(movementType.ToUpper()))
                     {
-                        return BadRequest(new { message = "Invalid movement type. Valid types are: " + string.Join(", ", validTypes) });
+                        return BadRequest(new { message = "Invalid movement type. Valid types are: " + string.Join(", ", MovementTypes.ValidTypes) });
                     }
                     movements = await _stockMovementService.GetMovementsByTypeAsync(movementType.ToUpper());
                 }

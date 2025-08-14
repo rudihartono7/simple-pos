@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PosSystem.Data;
 using PosSystem.Models;
+using PosSystem.Constants;
 
 namespace PosSystem.Services
 {
@@ -150,21 +151,21 @@ namespace PosSystem.Services
             // Update quantity based on movement type
             switch (movementType.ToUpper())
             {
-                case "STOCK_IN":
-                case "TRANSFER_IN":
-                case "ADJUSTMENT_IN":
+                case var type when type == MovementTypes.STOCK_IN:
+                case var type2 when type2 == MovementTypes.TRANSFER_IN:
+                case var type3 when type3 == MovementTypes.ADJUSTMENT_IN:
                     warehouseStock.QuantityOnHand += quantity;
                     break;
-                case "STOCK_OUT":
-                case "TRANSFER_OUT":
-                case "ADJUSTMENT_OUT":
-                case "SALE":
+                case var type4 when type4 == MovementTypes.STOCK_OUT:
+                case var type5 when type5 == MovementTypes.TRANSFER_OUT:
+                case var type6 when type6 == MovementTypes.ADJUSTMENT_OUT:
+                case var type7 when type7 == MovementTypes.SALE:
                     warehouseStock.QuantityOnHand -= quantity;
                     break;
-                case "RESERVE":
+                case var type8 when type8 == MovementTypes.RESERVE:
                     warehouseStock.QuantityReserved += quantity;
                     break;
-                case "UNRESERVE":
+                case var type9 when type9 == MovementTypes.UNRESERVE:
                     warehouseStock.QuantityReserved -= quantity;
                     break;
             }

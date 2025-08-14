@@ -97,7 +97,7 @@ namespace PosSystem.Controllers
         {
             try
             {
-                var transactions = await _transactionService.GetTransactionsByDateRangeAsync(startDate, endDate, storeId);
+                var transactions = await _transactionService.GetTransactionsByDateRangeAsync(startDate, endDate.AddDays(1), storeId);
                 return Ok(transactions);
             }
             catch (Exception ex)

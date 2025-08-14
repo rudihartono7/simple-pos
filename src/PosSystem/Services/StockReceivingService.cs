@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PosSystem.Data;
 using PosSystem.Models;
+using PosSystem.Constants;
 
 namespace PosSystem.Services
 {
@@ -185,7 +186,7 @@ namespace PosSystem.Services
                     {
                         ProductId = item.ProductId,
                         ProductVariantId = item.ProductVariantId,
-                        MovementType = "STOCK_IN",
+                        MovementType = MovementTypes.STOCK_IN,
                         Quantity = item.QuantityAccepted,
                         UnitCost = item.UnitCost,
                         ReferenceId = stockReceiving.Id,

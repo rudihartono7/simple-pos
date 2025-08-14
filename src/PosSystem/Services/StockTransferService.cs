@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PosSystem.Data;
 using PosSystem.Models;
 using PosSystem.Services.Interfaces;
+using PosSystem.Constants;
 
 namespace PosSystem.Services
 {
@@ -279,7 +280,7 @@ namespace PosSystem.Services
                 {
                     ProductId = item.ProductId,
                     ProductVariantId = item.ProductVariantId,
-                    MovementType = "TRANSFER_OUT",
+                    MovementType = MovementTypes.TRANSFER_OUT,
                     Quantity = -item.QuantityReceived,
                     UnitCost = item.UnitCost,
                     ReferenceType = "STOCK_TRANSFER",
@@ -294,7 +295,7 @@ namespace PosSystem.Services
                 {
                     ProductId = item.ProductId,
                     ProductVariantId = item.ProductVariantId,
-                    MovementType = "TRANSFER_IN",
+                    MovementType = MovementTypes.TRANSFER_IN,
                     Quantity = item.QuantityReceived,
                     UnitCost = item.UnitCost,
                     ReferenceType = "STOCK_TRANSFER",

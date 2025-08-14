@@ -438,9 +438,9 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Movement Type</label>
               <select v-model="stockForm.movementType" required class="form-input">
-                <option value="StockIn">Stock In</option>
-                <option value="StockOut">Stock Out</option>
-                <option value="Adjustment">Adjustment</option>
+                <option :value="MOVEMENT_TYPES.STOCK_IN">Stock In</option>
+                <option :value="MOVEMENT_TYPES.STOCK_OUT">Stock Out</option>
+                <option :value="MOVEMENT_TYPES.ADJUSTMENT">Adjustment</option>
               </select>
             </div>
             
@@ -481,6 +481,13 @@
 definePageMeta({
   middleware: 'auth'
 })
+
+// Movement Types Constants (matching MovementTypes.cs)
+const MOVEMENT_TYPES = {
+  STOCK_IN: 'StockIn',
+  STOCK_OUT: 'StockOut',
+  ADJUSTMENT: 'Adjustment'
+} as const
 
 const { showSuccess, showError, showWarning } = useAlert()
 
@@ -548,7 +555,7 @@ const imagePreview = ref<string | null>(null)
 
 const stockForm = ref({
   quantity: 0,
-  movementType: 'StockIn'
+  movementType: MOVEMENT_TYPES.STOCK_IN
 })
 
 // Methods
@@ -726,7 +733,7 @@ const updateStock = (product: Product) => {
   selectedProduct.value = product
   stockForm.value = {
     quantity: 0,
-    movementType: 'StockIn'
+    movementType: MOVEMENT_TYPES.STOCK_IN
   }
   showStockModal.value = true
 }
