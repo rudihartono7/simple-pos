@@ -30,7 +30,7 @@
             <option value="">All Status</option>
             <option value="Completed">Completed</option>
             <option value="Pending">Pending</option>
-            <option value="Held">Held</option>
+            <option value="Hold">Held</option>
             <option value="Cancelled">Cancelled</option>
           </select>
         </div>
@@ -85,7 +85,7 @@
             <tr v-for="transaction in filteredTransactions" :key="transaction.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-900">{{ transaction.transactionNumber }}</div>
-                <div class="text-sm text-gray-500">{{ transaction.paymentMethod || 'N/A' }}</div>
+                <div class="text-sm text-gray-500">{{ transaction.payments?.map(p => p.paymentMethod).join(', ') || 'N/A' }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">
@@ -117,11 +117,25 @@
                   View
                 </button>
                 <button
+                  v-if="transaction.status === 'Hold'"
+                  @click="resumeTransaction(transaction.id)"
+                  class="text-orange-600 hover:text-orange-900"
+                >
+                  Resume
+                </button>
+                <button
                   v-if="transaction.status === 'Completed'"
                   @click="printReceipt(transaction.id)"
                   class="text-green-600 hover:text-green-900"
                 >
                   Print
+                </button>
+                <button
+                  v-if="transaction.status === 'Completed'"
+                  @click="showRefundModal(transaction)"
+                  class="text-red-600 hover:text-red-900"
+                >
+                  Refund
                 </button>
               </td>
             </tr>
@@ -221,12 +235,80 @@
               Close
             </button>
             <button
+              v-if="selectedTransaction.status === 'Hold'"
+              @click="resumeTransaction(selectedTransaction.id)"
+              class="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+            >
+              <Icon name="heroicons:play" class="h-4 w-4 mr-2 inline" />
+              Resume
+            </button>
+            <button
               v-if="selectedTransaction.status === 'Completed'"
               @click="printReceipt(selectedTransaction.id)"
               class="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <Icon name="heroicons:printer" class="h-4 w-4 mr-2 inline" />
               Print Receipt
+            </button>
+            <button
+              v-if="selectedTransaction.status === 'Completed'"
+              @click="showRefundModal(selectedTransaction)"
+              class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              <Icon name="heroicons:arrow-uturn-left" class="h-4 w-4 mr-2 inline" />
+              Refund
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Refund Modal -->
+    <div v-if="showRefund" class="fixed inset-0 modal-backdrop overflow-y-auto h-full w-full z-50">
+      <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 lg:w-1/3 shadow-lg rounded-md bg-white">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-900">Refund Transaction</h3>
+          <button @click="closeRefundModal" class="text-gray-400 hover:text-gray-600">
+            <Icon name="heroicons:x-mark" class="h-6 w-6" />
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Transaction Number</label>
+            <p class="text-sm text-gray-900 font-medium">{{ refundTransaction?.transactionNumber }}</p>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Total Amount</label>
+            <p class="text-sm text-gray-900 font-medium">{{ formatCurrency(refundTransaction?.totalAmount || 0) }}</p>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Refund Reason *</label>
+            <textarea
+              v-model="refundReason"
+              rows="3"
+              class="form-input w-full"
+              placeholder="Please provide a reason for the refund..."
+              required
+            ></textarea>
+          </div>
+          
+          <div class="flex justify-end space-x-3 pt-4 border-t">
+            <button
+              @click="closeRefundModal"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              Cancel
+            </button>
+            <button
+              @click="processRefund"
+              :disabled="!refundReason.trim() || isProcessingRefund"
+              class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Icon v-if="isProcessingRefund" name="heroicons:arrow-path" class="h-4 w-4 mr-2 inline animate-spin" />
+              {{ isProcessingRefund ? 'Processing...' : 'Process Refund' }}
             </button>
           </div>
         </div>
@@ -248,7 +330,8 @@ interface Transaction {
   taxAmount: number
   finalAmount: number
   status: string
-  paymentMethod?: string
+  paymentMethod?: string,
+  payments?: Payment[],
   amountReceived?: number
   changeAmount?: number
   transactionDate: string
@@ -262,6 +345,15 @@ interface Transaction {
   }
   items?: TransactionItem[]
   transactionItems?: TransactionItem[]
+}
+
+interface Payment {
+  id?: number
+  transactionId: number
+  paymentMethod: string
+  amount: number
+  paymentDate: string,
+  status: string
 }
 
 interface TransactionItem {
@@ -287,6 +379,10 @@ const searchTerm = ref('')
 const statusFilter = ref('')
 const fromDate = ref('')
 const toDate = ref('')
+const showRefund = ref(false)
+const refundTransaction = ref<Transaction | null>(null)
+const refundReason = ref('')
+const isProcessingRefund = ref(false)
 
 // Methods
 const formatCurrency = (amount: number): string => {
@@ -309,7 +405,7 @@ const getStatusBadgeClass = (status: string): string => {
       return 'bg-green-100 text-green-800'
     case 'Pending':
       return 'bg-yellow-100 text-yellow-800'
-    case 'Held':
+    case 'Hold':
       return 'bg-blue-100 text-blue-800'
     case 'Cancelled':
       return 'bg-red-100 text-red-800'
@@ -333,10 +429,10 @@ const loadTransactions = async () => {
       thirtyDaysAgo.setDate(today.getDate() - 30)
       
       if (!fromDate.value) {
-        fromDate.value = thirtyDaysAgo.toISOString().split('T')[0]
+        fromDate.value = thirtyDaysAgo.toISOString().split('T')[0] || ''
       }
       if (!toDate.value) {
-        toDate.value = today.toISOString().split('T')[0]
+        toDate.value = today.toISOString().split('T')[0] || ''
       }
     }
     
@@ -409,6 +505,12 @@ const viewTransaction = async (transaction: Transaction) => {
     })
     
     selectedTransaction.value = fullTransaction
+    console.log('Loaded transaction details:', fullTransaction)
+    //get paymentMethod from payments list property paymentMethod
+    if (fullTransaction.payments) {
+      fullTransaction.paymentMethod = fullTransaction.payments.map(p => p.paymentMethod).join(', ')
+    }
+    selectedTransaction.value.paymentMethod = fullTransaction.paymentMethod;
   } catch (error) {
     console.error('Failed to load transaction details:', error)
   }
@@ -441,6 +543,118 @@ const printReceipt = async (transactionId: number) => {
   } catch (error) {
     console.error('Failed to print receipt:', error)
     alert('Failed to print receipt')
+  }
+}
+
+const resumeTransaction = async (transactionId: number) => {
+  try {
+    const { token } = useAuth()
+    
+    // Get the full transaction details with items
+    const fullTransaction = await $fetch<Transaction>(`/api/transaction/${transactionId}`, {
+      headers: {
+        Authorization: `Bearer ${token.value ?? ''}`
+      },
+      baseURL: config.public.apiBase
+    })
+    
+    // Resume the transaction on the server
+    const response = await $fetch<Transaction>(`/api/transaction/${transactionId}/resume`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token.value ?? ''}`
+      },
+      baseURL: config.public.apiBase
+    })
+    
+    // Update the transaction in the list
+    const index = transactions.value.findIndex(t => t.id === transactionId)
+    if (index !== -1) {
+      transactions.value[index] = response
+    }
+    
+    // Update filtered transactions
+    filterTransactions()
+    
+    // Update selected transaction if it's the same one
+    if (selectedTransaction.value?.id === transactionId) {
+      selectedTransaction.value = response
+    }
+    
+    // Store transaction data for POS to load
+    const transactionData = {
+      transaction: fullTransaction,
+      shouldResume: true
+    }
+    
+    // Store in sessionStorage so POS can pick it up
+    sessionStorage.setItem('resumeTransaction', JSON.stringify(transactionData))
+    
+    // Navigate to POS page
+    await navigateTo('/pos')
+    
+    alert('Transaction resumed successfully!')
+  } catch (error) {
+    console.error('Failed to resume transaction:', error)
+    alert('Failed to resume transaction')
+  }
+}
+
+const showRefundModal = (transaction: Transaction) => {
+  refundTransaction.value = transaction
+  refundReason.value = ''
+  showRefund.value = true
+}
+
+const closeRefundModal = () => {
+  showRefund.value = false
+  refundTransaction.value = null
+  refundReason.value = ''
+  isProcessingRefund.value = false
+}
+
+const processRefund = async () => {
+  if (!refundTransaction.value || !refundReason.value.trim()) {
+    return
+  }
+  
+  isProcessingRefund.value = true
+  
+  try {
+    const { token } = useAuth()
+    
+    const response = await $fetch<Transaction>(`/api/transaction/${refundTransaction.value.id}/refund`, {
+      method: 'POST',
+      body: {
+        reason: refundReason.value.trim()
+      },
+      headers: {
+        Authorization: `Bearer ${token.value ?? ''}`
+      },
+      baseURL: config.public.apiBase
+    })
+    
+    // Update the transaction in the list
+    const index = transactions.value.findIndex(t => t.id === refundTransaction.value!.id)
+    if (index !== -1) {
+      transactions.value[index] = response
+    }
+    
+    // Update filtered transactions
+    filterTransactions()
+    
+    // Update selected transaction if it's the same one
+    if (selectedTransaction.value?.id === refundTransaction.value.id) {
+      selectedTransaction.value = response
+    }
+    
+    closeRefundModal()
+    alert('Transaction refunded successfully!')
+  } catch (error) {
+    console.error('Failed to process refund:', error)
+    alert('Failed to process refund')
+  } finally {
+    isProcessingRefund.value = false
   }
 }
 

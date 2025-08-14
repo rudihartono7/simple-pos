@@ -1006,10 +1006,78 @@ const loadBestSellerProducts = async () => {
   }
 }
 
+// Check for resumed transaction from sessionStorage
+const checkForResumedTransaction = async () => {
+  const resumeData = sessionStorage.getItem('resumeTransaction')
+  if (resumeData) {
+    try {
+      const { transaction, shouldResume } = JSON.parse(resumeData)
+      
+      if (shouldResume && transaction) {
+        // Switch to POS tab
+        activeTab.value = 'pos'
+        
+        // Load transaction into cart
+        if (transaction.transactionItems && transaction.transactionItems.length > 0) {
+          cartItems.value = transaction.transactionItems.map((item: TransactionItem) => ({
+            id: item.productId,
+            productName: item.product?.productName || 'Unknown Product',
+            productCode: item.product?.productCode || '',
+            unitPrice: item.unitPrice,
+            stockQuantity: 999, // We don't have current stock info
+            quantity: item.quantity
+          }))
+        }
+        
+        // Set current transaction
+        currentTransaction.value = transaction
+        
+        // Set customer if exists
+        if (transaction.customerId) {
+          // Try to find customer in the list or load customer details
+          const customer = customers.value.find(c => c.id === transaction.customerId)
+          if (customer) {
+            selectedCustomer.value = customer
+            customerSearch.value = `${customer.firstName} ${customer.lastName}`
+          }
+        }
+        
+        showSuccess('Transaction resumed successfully!')
+      }
+      
+      // Clear the session storage
+      sessionStorage.removeItem('resumeTransaction')
+    } catch (error) {
+      console.error('Failed to resume transaction:', error)
+      sessionStorage.removeItem('resumeTransaction')
+    }
+  }
+}
+
+// Load customers for resume functionality
+const loadCustomers = async () => {
+  try {
+    const { token } = useAuth()
+    
+    const response = await $fetch<Customer[]>('/api/customer', {
+      headers: {
+        Authorization: `Bearer ${token.value ?? ''}`
+      },
+      baseURL: config.public.apiBase
+    })
+    
+    customers.value = response
+  } catch (error) {
+    console.error('Failed to load customers:', error)
+  }
+}
+
 // Initialize
 onMounted(async () => {
   await loadHeldTransactions()
   await loadBestSellerProducts()
+  await loadCustomers()
+  await checkForResumedTransaction()
 })
 
 // Watch for payment method changes

@@ -20,8 +20,8 @@ namespace PosSystem.Services
         {
             transaction.TransactionDate = DateTime.UtcNow;
             transaction.CreatedAt = DateTime.UtcNow;
-            transaction.Status = "Pending";
-            transaction.PaymentStatus = "Pending";
+            transaction.Status = TransactionStatus.PENDING;
+            transaction.PaymentStatus = TransactionStatus.PENDING;
 
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
@@ -205,10 +205,10 @@ namespace PosSystem.Services
             if (transaction == null)
                 throw new ArgumentException("Transaction not found");
 
-            if (transaction.Status != "Hold")
+            if (transaction.Status != TransactionStatus.HOLD)
                 throw new InvalidOperationException("Only held transactions can be resumed");
 
-            transaction.Status = "Pending";
+            transaction.Status = TransactionStatus.PENDING;
             await _context.SaveChangesAsync();
 
             return transaction;
@@ -220,10 +220,10 @@ namespace PosSystem.Services
             if (transaction == null)
                 throw new ArgumentException("Transaction not found");
 
-            if (transaction.Status != "Completed")
+            if (transaction.Status != TransactionStatus.COMPLETED)
                 throw new InvalidOperationException("Only completed transactions can be refunded");
 
-            transaction.Status = "Refunded";
+            transaction.Status = TransactionStatus.REFUNDED;
             transaction.Notes = $"Refunded: {reason}";
 
             // Restore stock for each item
