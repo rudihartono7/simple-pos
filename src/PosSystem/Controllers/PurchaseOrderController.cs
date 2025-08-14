@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using PosSystem.Models;
 using PosSystem.Services;
@@ -66,15 +68,53 @@ namespace PosSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PurchaseOrder>> CreatePurchaseOrder(PurchaseOrder purchaseOrder)
+        public async Task<ActionResult<PurchaseOrder>> CreatePurchaseOrder(PurchaseOrderDto purchaseOrder)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return BadRequest(new { message = "Invalid user ID" });
+            }
+
+            if(!int.TryParse(User.FindFirst("StoreId")?.Value, out int storeId))
+            {
+                return BadRequest(new { message = "Store ID not found" });
+            }
+
+            try
+            {
+                var newPurchaseOrder = new PurchaseOrder
+            {
+                PurchaseOrderNumber = await _purchaseOrderService.GeneratePurchaseOrderNumberAsync(),
+                OrderDate = DateTime.UtcNow,
+                Status = "Pending",
+                SupplierId = purchaseOrder.SupplierId,
+                CreatedBy = userId,
+                StoreId = storeId,
+                ExpectedDeliveryDate = purchaseOrder.ExpectedDeliveryDate.ToUniversalTime(),
+                Notes = purchaseOrder.Notes,
+                PurchaseOrderItems  = purchaseOrder.Items.Select(item => new PurchaseOrderItem
+                {
+                    ProductId = item.ProductId,
+                    QuantityOrdered = item.QuantityOrdered,
+                    UnitCost = item.UnitCost,
+
+                }).ToList()
+            };
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var createdPurchaseOrder = await _purchaseOrderService.CreatePurchaseOrderAsync(purchaseOrder);
+            var createdPurchaseOrder = await _purchaseOrderService.CreatePurchaseOrderAsync(newPurchaseOrder);
             return CreatedAtAction(nameof(GetPurchaseOrder), new { id = createdPurchaseOrder.Id }, createdPurchaseOrder);
+                
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Error creating purchase order", details = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
@@ -148,5 +188,21 @@ namespace PosSystem.Controllers
             var total = await _purchaseOrderService.CalculatePurchaseOrderTotalAsync(id);
             return Ok(total);
         }
+    }
+
+    public class PurchaseOrderDto
+    {
+        [Required]
+        public int SupplierId { get; set; }
+        [Required]
+        public DateTime ExpectedDeliveryDate { get; set; }
+        public string Notes { get; set; }
+        public List<PurchaseOrderItemDto> Items { get; set; }
+    }
+    public class PurchaseOrderItemDto
+    {
+        public int ProductId { get; set; }
+        public int QuantityOrdered { get; set; }
+        public decimal UnitCost { get; set; }
     }
 }
