@@ -1,10 +1,12 @@
 <template>
   <div class="max-w-md w-full space-y-8">
     <div class="text-center">
-      <div class="mx-auto h-12 w-12 bg-indigo-600 rounded-full flex items-center justify-center mb-4">
-        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="mx-auto h-35 w-35 bg-white shadow rounded-600 rounded-full flex items-center justify-center mb-4">
+        <!-- add image as logo from public/images/logo.png -->
+        <img src="/images/logo.png" alt="Logo" class="h-15 w-30">
+        <!-- <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
+        </svg> -->
       </div>
       <h2 class="text-3xl font-extrabold text-gray-900">
         Sign in to POS System

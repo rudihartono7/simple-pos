@@ -4,10 +4,12 @@
     <div class="fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
       <div class="flex items-center justify-center h-16 px-4 bg-gray-800">
         <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <div class="w-10 h-10 bg-white shadow rounded-lg flex items-center justify-center">
+            <!-- add image as logo from public/images/logo.png -->
+            <img src="/images/logo.png" alt="Logo" class="w-10 h-8">
+            <!-- <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-            </svg>
+            </svg> -->
           </div>
           <span class="text-white font-semibold text-lg">POS System</span>
         </div>
@@ -216,11 +218,11 @@
           
           <div class="flex items-center space-x-4">
             <!-- Notifications -->
-            <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full">
+            <!-- <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.5 3.5L6.5 7.5 1.5 2.5"/>
               </svg>
-            </button>
+            </button> -->
             
             <!-- User Menu -->
             <div class="relative" v-if="user">
