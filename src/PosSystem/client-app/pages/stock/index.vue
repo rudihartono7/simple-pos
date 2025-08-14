@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <div class="px-4 py-6 sm:px-0">
@@ -7,51 +7,51 @@
         <div class="mb-8">
           <div class="flex items-center justify-between">
             <div>
-              <h1 class="text-3xl font-bold text-gray-900 flex items-center">
-                <svg class="h-8 w-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <h1 class="text-3xl font-bold text-black flex items-center">
+                <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 Stock Movement
               </h1>
-              <p class="text-gray-600 mt-2">Track and manage inventory stock movements with real-time insights</p>
+              <p class="text-neutral-gray mt-2">Track and manage inventory stock movements with real-time insights</p>
             </div>
             <div class="hidden md:flex items-center space-x-4">
-              <div class="bg-blue-50 px-4 py-2 rounded-lg">
-                <div class="text-sm text-blue-600 font-medium">Total Movements</div>
-                <div class="text-2xl font-bold text-blue-700">{{ movements.length }}</div>
+              <div class="bg-primary-light px-4 py-2 rounded-lg">
+                <div class="text-sm text-primary font-medium">Total Movements</div>
+                <div class="text-2xl font-bold text-primary-dark">{{ movements.length }}</div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Filters Card -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="bg-white rounded-xl shadow-sm border border-neutral-medium p-6 mb-6">
           <div class="flex items-center mb-4">
-            <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="h-5 w-5 text-neutral-gray mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 2v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
             </svg>
-            <h3 class="text-lg font-semibold text-gray-900">Filters & Search</h3>
+            <h3 class="text-lg font-semibold text-black">Filters & Search</h3>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+              <label class="block text-sm font-medium text-neutral-gray mb-2">Start Date</label>
               <input
                 v-model="startDate"
                 type="date"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                class="w-full px-4 py-2 border border-neutral-medium rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+              <label class="block text-sm font-medium text-neutral-gray mb-2">End Date</label>
               <input
                 v-model="endDate"
                 type="date"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                class="w-full px-4 py-2 border border-neutral-medium rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Movement Type</label>
+              <label class="block text-sm font-medium text-neutral-gray mb-2">Movement Type</label>
               <select
               v-model="movementTypeFilter"
               @change="loadMovements"
@@ -68,7 +68,7 @@
             </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Product ID</label>
+              <label class="block text-sm font-medium text-neutral-gray mb-2">Product ID</label>
               <input
                 v-model="productIdFilter"
                 type="number"
@@ -82,7 +82,7 @@
             <button
               @click="loadMovements"
               :disabled="loading"
-              class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              class="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary-dark text-black font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 2v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
@@ -92,7 +92,7 @@
             <button
               @click="loadSummary"
               :disabled="loading"
-              class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              class="inline-flex items-center px-4 py-2 bg-success hover:bg-success-dark text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>

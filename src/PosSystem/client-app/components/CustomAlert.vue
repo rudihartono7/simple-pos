@@ -7,7 +7,7 @@
         @click.self="handleBackdropClick"
       >
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black-25 bg-opacity-15"></div>
+        <div class="absolute inset-0 modal-backdrop"></div>
         
         <!-- Alert Modal -->
         <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
@@ -24,21 +24,21 @@
               </svg>
             </div>
             <div class="flex-1 min-w-0">
-              <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+              <h3 class="text-base sm:text-lg font-semibold text-black mb-1">
                 {{ computedTitle }}
               </h3>
-              <p class="text-sm sm:text-base text-gray-600 break-words">
+              <p class="text-sm sm:text-base text-neutral-gray break-words">
                 {{ message }}
               </p>
             </div>
           </div>
           
           <!-- Actions -->
-          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-end">
+          <div class="bg-neutral-light px-4 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-end">
             <button
               v-if="showCancel"
               @click="handleCancel"
-              class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+              class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-medium rounded-md hover:bg-neutral-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
             >
               {{ cancelText }}
             </button>
@@ -101,45 +101,45 @@ const emit = defineEmits<{
 const iconBgClass = computed(() => {
   switch (props.type) {
     case 'success':
-      return 'bg-green-100'
+      return 'bg-primary'
     case 'error':
-      return 'bg-red-100'
+      return 'bg-danger'
     case 'warning':
-      return 'bg-yellow-100'
+      return 'bg-primary'
     case 'confirm':
-      return 'bg-blue-100'
+      return 'bg-primary'
     default:
-      return 'bg-blue-100'
+      return 'bg-primary'
   }
 })
 
 const iconColorClass = computed(() => {
   switch (props.type) {
     case 'success':
-      return 'text-green-600'
+      return 'text-black'
     case 'error':
-      return 'text-red-600'
+      return 'text-white'
     case 'warning':
-      return 'text-yellow-600'
+      return 'text-black'
     case 'confirm':
-      return 'text-blue-600'
+      return 'text-black'
     default:
-      return 'text-blue-600'
+      return 'text-black'
   }
 })
 
 const confirmButtonClass = computed(() => {
   switch (props.type) {
     case 'success':
-      return 'text-white bg-green-600 hover:bg-green-700 focus:ring-green-500'
+      return 'text-black bg-primary hover:bg-primary focus:ring-primary'
     case 'error':
-      return 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-500'
+      return 'text-white bg-danger hover:bg-danger focus:ring-danger'
     case 'warning':
-      return 'text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500'
+      return 'text-black bg-primary hover:bg-primary focus:ring-primary'
     case 'confirm':
-      return 'text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
+      return 'text-black bg-primary hover:bg-primary focus:ring-primary'
     default:
-      return 'text-white bg-orange-600 hover:bg-orange-700 focus:ring-orange-500'
+      return 'text-black bg-primary hover:bg-primary focus:ring-primary'
   }
 })
 

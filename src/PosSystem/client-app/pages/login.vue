@@ -8,10 +8,10 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg> -->
       </div>
-      <h2 class="text-3xl font-extrabold text-gray-900">
+      <h2 class="text-3xl font-extrabold text-black">
         Sign in to POS System
       </h2>
-      <p class="mt-2 text-sm text-gray-600">
+      <p class="mt-2 text-sm text-neutral-gray">
         Enter your credentials to access the system
       </p>
     </div>
@@ -19,7 +19,7 @@
     <div class="bg-white py-8 px-6 shadow-xl rounded-lg">
       <form class="space-y-6" @submit.prevent="handleLogin">
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+          <label for="email" class="block text-sm font-medium text-black mb-2">
             Email address
           </label>
           <input
@@ -35,7 +35,7 @@
         </div>
         
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+          <label for="password" class="block text-sm font-medium text-black mb-2">
             Password
           </label>
           <input
@@ -50,15 +50,15 @@
           />
         </div>
 
-        <div v-if="error" class="bg-red-50 border border-red-200 rounded-md p-3">
+        <div v-if="error" class="bg-danger-light border border-danger rounded-md p-3">
           <div class="flex">
             <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <svg class="h-5 w-5 text-danger" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
               </svg>
             </div>
             <div class="ml-3">
-              <p class="text-sm text-red-800">{{ error }}</p>
+              <p class="text-sm text-danger">{{ error }}</p>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@
         </div>
         
         <div class="text-center">
-          <p class="text-xs text-gray-500">
+          <p class="text-xs text-neutral-gray">
             Default credentials: admin@possystem.com / Admin123!
           </p>
         </div>

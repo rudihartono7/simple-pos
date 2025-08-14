@@ -1,26 +1,26 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Modern Header -->
-    <header class="bg-white/80 backdrop-blur-sm shadow-sm border-b border-gray-200/50 sticky top-0 z-40">
+    <header class="bg-white/80 backdrop-blur-sm shadow-sm border-b border-neutral-medium sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-6">
           <div class="flex items-center space-x-4">
-            <div class="p-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl shadow-lg">
+            <div class="p-2 bg-gradient-to-r from-primary to-primary-dark rounded-xl shadow-lg">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
               </svg>
             </div>
             <div>
-              <h1 class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+              <h1 class="text-2xl font-bold text-black">
                 Promotion Management
               </h1>
-              <p class="text-sm text-gray-600 mt-1">Manage discounts and promotional offers</p>
+              <p class="text-sm text-neutral-gray mt-1">Manage discounts and promotional offers</p>
             </div>
           </div>
           <div class="flex items-center space-x-3">
             <button
               @click="openCreateModal"
-              class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium rounded-lg hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transition-all duration-200"
+              class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary to-primary-dark text-black text-sm font-medium rounded-lg hover:from-primary-dark hover:to-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -35,11 +35,11 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Enhanced Search and Filters -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-6 mb-8">
+      <div class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-neutral-medium p-6 mb-8">
         <div class="flex flex-col sm:flex-row gap-4">
           <div class="flex-1 relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="h-5 w-5 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
@@ -47,13 +47,13 @@
               v-model="searchQuery"
               type="text"
               placeholder="Search promotions by name or code..."
-              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/80 backdrop-blur-sm shadow-sm"
+              class="w-full pl-10 pr-4 py-3 border border-neutral-medium rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80 backdrop-blur-sm shadow-sm"
             />
           </div>
           <div class="relative">
             <select
               v-model="statusFilter"
-              class="appearance-none px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/80 backdrop-blur-sm shadow-sm text-sm font-medium"
+              class="appearance-none px-4 py-3 pr-10 border border-neutral-medium rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bg-white/80 backdrop-blur-sm shadow-sm text-sm font-medium"
             >
               <option value="">All Promotions</option>
               <option value="active">Active Only</option>
@@ -61,7 +61,7 @@
               <option value="expired">Expired</option>
             </select>
             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="h-4 w-4 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </div>
@@ -69,7 +69,7 @@
           <button
             @click="loadAllPromotions"
             :disabled="loading"
-            class="inline-flex items-center px-6 py-3 bg-white text-gray-700 text-sm font-medium rounded-xl border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50"
+            class="inline-flex items-center px-6 py-3 bg-white text-neutral-gray text-sm font-medium rounded-xl border border-neutral-medium hover:bg-neutral-light focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -80,24 +80,24 @@
       </div>
 
       <!-- Enhanced Promotions Grid -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden">
-        <div class="px-6 py-5 border-b border-gray-200/50 bg-gradient-to-r from-gray-50 to-white">
+      <div class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-neutral-medium overflow-hidden">
+        <div class="px-6 py-5 border-b border-neutral-medium bg-gradient-to-r from-neutral-light to-white">
           <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold text-gray-900 flex items-center">
-              <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h2 class="text-xl font-semibold text-black flex items-center">
+              <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
               </svg>
               Promotions
             </h2>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-light text-primary">
               {{ filteredPromotions.length }} total
             </span>
           </div>
         </div>
         
         <div v-if="loading" class="p-12 text-center">
-          <div class="inline-flex items-center text-gray-500">
-            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24">
+          <div class="inline-flex items-center text-neutral-gray">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -106,11 +106,11 @@
         </div>
         
         <div v-else-if="filteredPromotions.length === 0" class="p-12 text-center">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="mx-auto h-12 w-12 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
           </svg>
-          <h3 class="mt-4 text-lg font-medium text-gray-900">No promotions found</h3>
-          <p class="mt-2 text-sm text-gray-500">Get started by creating a new promotion.</p>
+          <h3 class="mt-4 text-lg font-medium text-black">No promotions found</h3>
+          <p class="mt-2 text-sm text-neutral-gray">Get started by creating a new promotion.</p>
         </div>
         
         <div v-else class="p-6">
@@ -118,14 +118,14 @@
             <div
               v-for="promotion in filteredPromotions"
               :key="promotion.id"
-              class="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 hover:shadow-xl hover:bg-white transition-all duration-300 group"
+              class="bg-white/80 backdrop-blur-sm border border-neutral-medium rounded-2xl p-6 hover:shadow-xl hover:bg-white transition-all duration-300 group"
             >
               <div class="flex justify-between items-start mb-4">
                 <div class="flex-1">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors">
+                  <h3 class="text-lg font-semibold text-black mb-2 group-hover:text-primary transition-colors">
                     {{ promotion.promotionName }}
                   </h3>
-                  <div class="flex items-center text-sm text-gray-500">
+                  <div class="flex items-center text-sm text-neutral-gray">
                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                     </svg>
@@ -135,7 +135,7 @@
                 <div class="relative">
                   <button
                     @click="togglePromotionActions(promotion.id)"
-                    class="p-2 text-gray-400 hover:text-gray-600 rounded-xl hover:bg-gray-100 transition-colors"
+                    class="p-2 text-neutral-gray hover:text-primary rounded-xl hover:bg-primary-light transition-colors"
                   >
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
@@ -143,7 +143,7 @@
                   </button>
                   <div
                     v-if="activePromotionActions === promotion.id"
-                    class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg z-10 border border-gray-200/50 backdrop-blur-sm"
+                    class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg z-10 border border-neutral-medium backdrop-blur-sm"
                   >
                     <div class="py-2">
                       <button

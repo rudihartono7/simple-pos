@@ -1,19 +1,19 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <!-- Page Header -->
       <div class="mb-8">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-3xl font-bold text-gray-900">Reports & Analytics</h1>
-            <p class="mt-2 text-gray-600">View sales reports and business analytics to track your performance</p>
+            <h1 class="text-3xl font-bold text-black">Reports & Analytics</h1>
+            <p class="mt-2 text-neutral-gray">View sales reports and business analytics to track your performance</p>
           </div>
           <div class="flex items-center space-x-3">
             <button
               @click="refreshData"
               :disabled="loading"
-              class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              class="inline-flex items-center px-4 py-2 border border-neutral-medium rounded-md shadow-sm text-sm font-medium text-neutral-gray bg-white hover:bg-neutral-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
             >
               <svg class="w-4 h-4 mr-2" :class="{ 'animate-spin': loading }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -26,8 +26,8 @@
 
       <!-- Report Type Selection -->
       <div class="mb-8">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 class="text-lg font-semibold text-gray-900 mb-4">Report Type</h2>
+        <div class="bg-white rounded-lg shadow-sm border border-neutral-medium p-6">
+          <h2 class="text-lg font-semibold text-black mb-4">Report Type</h2>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             <button
               v-for="type in reportTypes"
@@ -36,8 +36,8 @@
               :class="[
                 'flex items-center justify-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
                 selectedReportType === type.key
-                  ? 'bg-blue-600 text-white shadow-md transform scale-105'
-                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 hover:border-gray-300'
+                  ? 'bg-primary text-black shadow-md transform scale-105'
+                  : 'bg-neutral-light text-neutral-gray hover:bg-neutral-medium border border-neutral-medium hover:border-neutral-gray'
               ]"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,20 +51,20 @@
 
       <!-- Date Range and Filters -->
       <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <h2 class="text-lg font-medium text-gray-900 mb-4">Report Parameters</h2>
+        <h2 class="text-lg font-medium text-black mb-4">Report Parameters</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div v-if="selectedReportType !== 'dashboard-metrics'">
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block text-sm font-medium text-neutral-gray mb-1">
               {{ selectedReportType === 'daily-sales' ? 'Date' : 'Start Date' }}
             </label>
             <input
               v-model="startDate"
               type="date"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-neutral-medium rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
           <div v-if="selectedReportType !== 'daily-sales' && selectedReportType !== 'dashboard-metrics'">
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block text-sm font-medium text-neutral-gray mb-1">
               End Date
             </label>
             <input
@@ -74,7 +74,7 @@
             />
           </div>
           <div v-if="selectedReportType === 'top-selling-products'">
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block text-sm font-medium text-neutral-gray mb-1">
               Top Count
             </label>
             <input
@@ -294,7 +294,7 @@
                     :key="key"
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    {{ formatColumnName(key) }}
+                    {{ formatColumnName(String(key)) }}
                   </th>
                 </tr>
               </thead>
@@ -305,7 +305,7 @@
                     :key="key"
                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                   >
-                    {{ formatCellValue(key, value) }}
+                    {{ formatCellValue(String(key), value) }}
                   </td>
                 </tr>
               </tbody>
@@ -321,9 +321,9 @@
               :key="key"
               class="bg-gray-50 p-4 rounded-lg"
             >
-              <h3 class="text-sm font-medium text-gray-700">{{ formatColumnName(key) }}</h3>
+              <h3 class="text-sm font-medium text-gray-700">{{ formatColumnName(String(key)) }}</h3>
               <p class="text-lg font-semibold text-gray-900">
-                {{ formatCellValue(key, value) }}
+                {{ formatCellValue(String(key), value) }}
               </p>
             </div>
           </div>

@@ -1,20 +1,20 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Header -->
-    <header class="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-lg">
+    <header class="bg-gradient-to-r from-primary to-primary-dark text-black shadow-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-6">
           <div class="flex items-center space-x-4">
             <Icon name="heroicons:building-storefront" class="h-8 w-8" />
             <div>
               <h1 class="text-3xl font-bold">Warehouses</h1>
-              <p class="text-indigo-100 text-lg">Manage warehouse locations and inventory</p>
+              <p class="text-primary-light text-lg">Manage warehouse locations and inventory</p>
             </div>
           </div>
           <div class="flex items-center space-x-4">
             <button
               @click="openCreateModal"
-              class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-indigo-50 transition-colors flex items-center space-x-2"
+              class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary-light transition-colors flex items-center space-x-2"
             >
               <Icon name="heroicons:plus" class="h-5 w-5" />
               <span>New Warehouse</span>
@@ -27,17 +27,17 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <!-- Search and Filters -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="bg-white rounded-lg shadow-sm border border-neutral-medium p-6 mb-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
           <div class="flex-1 max-w-lg">
             <div class="relative">
-              <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-gray h-5 w-5" />
               <input
                 v-model="searchQuery"
                 @input="searchWarehouses"
                 type="text"
                 placeholder="Search warehouses..."
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                class="w-full pl-10 pr-4 py-2 border border-neutral-medium rounded-lg focus:ring-primary focus:border-primary"
               />
             </div>
           </div>
@@ -47,13 +47,13 @@
                 v-model="showActiveOnly"
                 @change="filterWarehouses"
                 type="checkbox"
-                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                class="rounded border-neutral-medium text-primary focus:ring-primary"
               />
-              <span class="ml-2 text-sm text-gray-700">Active only</span>
+              <span class="ml-2 text-sm text-neutral-gray">Active only</span>
             </label>
             <button
               @click="refreshWarehouses"
-              class="text-indigo-600 hover:text-indigo-800 p-2 rounded-lg hover:bg-indigo-50"
+              class="text-primary hover:text-primary-dark p-2 rounded-lg hover:bg-primary-light"
               title="Refresh"
             >
               <Icon name="heroicons:arrow-path" class="h-5 w-5" />
@@ -64,20 +64,20 @@
 
       <!-- Warehouses Grid -->
       <div v-if="loading" class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-        <p class="mt-2 text-gray-600">Loading warehouses...</p>
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <p class="mt-2 text-neutral-gray">Loading warehouses...</p>
       </div>
 
       <div v-else-if="filteredWarehouses.length === 0" class="text-center py-12">
-        <Icon name="heroicons:building-storefront" class="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No warehouses found</h3>
-        <p class="text-gray-500 mb-4">
+        <Icon name="heroicons:building-storefront" class="h-12 w-12 text-neutral-gray mx-auto mb-4" />
+        <h3 class="text-lg font-medium text-black mb-2">No warehouses found</h3>
+        <p class="text-neutral-gray mb-4">
           {{ searchQuery ? 'Try adjusting your search criteria.' : 'Create your first warehouse to get started.' }}
         </p>
         <button
           v-if="!searchQuery"
           @click="openCreateModal"
-          class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+          class="bg-primary text-black px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors"
         >
           Create Warehouse
         </button>
@@ -87,16 +87,16 @@
         <div
           v-for="warehouse in filteredWarehouses"
           :key="warehouse.id"
-          class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+          class="bg-white rounded-lg shadow-sm border border-neutral-medium hover:shadow-md transition-shadow"
         >
           <div class="p-6">
             <div class="flex items-start justify-between mb-4">
               <div class="flex-1">
-                <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ warehouse.warehouseName }}</h3>
-                <p class="text-sm text-gray-600 mb-2">Code: {{ warehouse.warehouseCode }}</p>
+                <h3 class="text-lg font-semibold text-black mb-1">{{ warehouse.warehouseName }}</h3>
+                <p class="text-sm text-neutral-gray mb-2">Code: {{ warehouse.warehouseCode }}</p>
                 <div class="flex items-center space-x-2">
                   <span
-                    :class="warehouse.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                    :class="warehouse.isActive ? 'bg-success-light text-success-dark' : 'bg-danger-light text-danger-dark'"
                     class="px-2 py-1 text-xs font-medium rounded-full"
                   >
                     {{ warehouse.isActive ? 'Active' : 'Inactive' }}

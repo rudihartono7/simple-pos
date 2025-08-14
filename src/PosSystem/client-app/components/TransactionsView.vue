@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <!-- Header -->
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold text-gray-900">Transactions</h2>
+      <h2 class="text-2xl font-bold text-black">Transactions</h2>
       <div class="flex space-x-3">
         <button @click="refreshTransactions" class="btn-secondary">
           <Icon name="heroicons:arrow-path" class="h-4 w-4 mr-2" />
@@ -15,7 +15,7 @@
     <div class="bg-white rounded-lg shadow-sm p-4">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+          <label class="block text-sm font-medium text-black mb-1">Search</label>
           <input
             v-model="searchTerm"
             type="text"
@@ -25,7 +25,7 @@
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <label class="block text-sm font-medium text-black mb-1">Status</label>
           <select v-model="statusFilter" class="form-select" @change="filterTransactions">
             <option value="">All Status</option>
             <option value="Completed">Completed</option>
@@ -35,7 +35,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+          <label class="block text-sm font-medium text-black mb-1">From Date</label>
           <input
               v-model="fromDate"
               type="date"
@@ -44,7 +44,7 @@
             />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+          <label class="block text-sm font-medium text-black mb-1">To Date</label>
           <input
               v-model="toDate"
               type="date"
@@ -58,46 +58,46 @@
     <!-- Transactions List -->
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-neutral-medium">
+          <thead class="bg-neutral-light">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">
                 Transaction
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">
                 Customer
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">
                 Amount
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">
                 Status
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">
                 Date
               </th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="transaction in filteredTransactions" :key="transaction.id" class="hover:bg-gray-50">
+          <tbody class="bg-white divide-y divide-neutral-medium">
+            <tr v-for="transaction in filteredTransactions" :key="transaction.id" class="hover:bg-neutral-light">
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">{{ transaction.transactionNumber }}</div>
-                <div class="text-sm text-gray-500">{{ transaction.payments?.map(p => p.paymentMethod).join(', ') || 'N/A' }}</div>
+                <div class="text-sm font-medium text-black">{{ transaction.transactionNumber }}</div>
+                <div class="text-sm text-neutral-gray">{{ transaction.payments?.map(p => p.paymentMethod).join(', ') || 'N/A' }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">
+                <div class="text-sm text-black">
                   {{ transaction.customer ? `${transaction.customer.firstName} ${transaction.customer.lastName}` : 'Walk-in' }}
                 </div>
-                <div class="text-sm text-gray-500">
+                <div class="text-sm text-neutral-gray">
                   {{ transaction.customer?.phone || '' }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">{{ formatCurrency(transaction.subTotal) }}</div>
-                <div class="text-sm text-gray-500">
+                <div class="text-sm font-medium text-black">{{ formatCurrency(transaction.subTotal) }}</div>
+                <div class="text-sm text-neutral-gray">
                   Discount: {{ formatCurrency(transaction.discountAmount) }}
                 </div>
               </td>
@@ -106,34 +106,34 @@
                   {{ transaction.status }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-black">
                 {{ formatDate(transaction.transactionDate) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                 <button
                   @click="viewTransaction(transaction)"
-                  class="text-blue-600 hover:text-blue-900"
+                  class="text-primary hover:text-black"
                 >
                   View
                 </button>
                 <button
                   v-if="transaction.status === 'Hold'"
                   @click="resumeTransaction(transaction.id)"
-                  class="text-orange-600 hover:text-orange-900"
+                  class="text-primary hover:text-black"
                 >
                   Resume
                 </button>
                 <button
                   v-if="transaction.status === 'Completed'"
                   @click="printReceipt(transaction.id)"
-                  class="text-green-600 hover:text-green-900"
+                  class="text-primary hover:text-black"
                 >
                   Print
                 </button>
                 <button
                   v-if="transaction.status === 'Completed'"
                   @click="showRefundModal(transaction)"
-                  class="text-red-600 hover:text-red-900"
+                  class="text-danger hover:text-black"
                 >
                   Refund
                 </button>
@@ -148,8 +148,8 @@
     <div v-if="selectedTransaction" class="fixed inset-0 modal-backdrop overflow-y-auto h-full w-full z-50">
       <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-900">Transaction Details</h3>
-          <button @click="selectedTransaction = null" class="text-gray-400 hover:text-gray-600">
+          <h3 class="text-lg font-bold text-black">Transaction Details</h3>
+          <button @click="selectedTransaction = null" class="text-neutral-gray hover:text-black">
             <Icon name="heroicons:x-mark" class="h-6 w-6" />
           </button>
         </div>
@@ -158,48 +158,48 @@
           <!-- Transaction Info -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Transaction Number</label>
-              <p class="text-sm text-gray-900">{{ selectedTransaction.transactionNumber }}</p>
+              <label class="block text-sm font-medium text-black">Transaction Number</label>
+              <p class="text-sm text-black">{{ selectedTransaction.transactionNumber }}</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Status</label>
+              <label class="block text-sm font-medium text-black">Status</label>
               <span :class="getStatusBadgeClass(selectedTransaction.status)" class="px-2 py-1 text-xs font-semibold rounded-full">
                 {{ selectedTransaction.status }}
               </span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Customer</label>
-              <p class="text-sm text-gray-900">
+              <label class="block text-sm font-medium text-black">Customer</label>
+              <p class="text-sm text-black">
                 {{ selectedTransaction.customer ? `${selectedTransaction.customer.firstName} ${selectedTransaction.customer.lastName}` : 'Walk-in' }}
               </p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Payment Method</label>
-              <p class="text-sm text-gray-900">{{ selectedTransaction.paymentMethod || 'N/A' }}</p>
+              <label class="block text-sm font-medium text-black">Payment Method</label>
+              <p class="text-sm text-black">{{ selectedTransaction.paymentMethod || 'N/A' }}</p>
             </div>
           </div>
 
           <!-- Items -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Items</label>
-            <div class="border rounded-lg overflow-hidden">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <label class="block text-sm font-medium text-black mb-2">Items</label>
+            <div class="border border-neutral-medium rounded-lg overflow-hidden">
+              <table class="min-w-full divide-y divide-neutral-medium">
+                <thead class="bg-neutral-light">
                   <tr>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Qty</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-neutral-gray uppercase">Product</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-neutral-gray uppercase">Qty</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-neutral-gray uppercase">Price</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-neutral-gray uppercase">Total</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200">
+                <tbody class="divide-y divide-neutral-medium">
                   <tr v-for="item in selectedTransaction.items || selectedTransaction.transactionItems" :key="item.id">
-                    <td class="px-4 py-2 text-sm text-gray-900">
+                    <td class="px-4 py-2 text-sm text-black">
                       {{ item.product?.productName || 'Unknown Product' }}
                     </td>
-                    <td class="px-4 py-2 text-sm text-gray-900">{{ item.quantity }}</td>
-                    <td class="px-4 py-2 text-sm text-gray-900">{{ formatCurrency(item.unitPrice) }}</td>
-                    <td class="px-4 py-2 text-sm text-gray-900">{{ formatCurrency(item.unitPrice * item.quantity) }}</td>
+                    <td class="px-4 py-2 text-sm text-black">{{ item.quantity }}</td>
+                    <td class="px-4 py-2 text-sm text-black">{{ formatCurrency(item.unitPrice) }}</td>
+                    <td class="px-4 py-2 text-sm text-black">{{ formatCurrency(item.unitPrice * item.quantity) }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -207,37 +207,37 @@
           </div>
 
           <!-- Totals -->
-          <div class="border-t pt-4">
-            <div class="flex justify-between text-sm">
+          <div class="border-t border-neutral-medium pt-4">
+            <div class="flex justify-between text-sm text-black">
               <span>Subtotal:</span>
               <span>{{ formatCurrency(selectedTransaction.subTotal) }}</span>
             </div>
-            <div class="flex justify-between text-sm">
+            <div class="flex justify-between text-sm text-black">
               <span>Discount:</span>
               <span>-{{ formatCurrency(selectedTransaction.discountAmount) }}</span>
             </div>
-            <div class="flex justify-between text-sm">
+            <div class="flex justify-between text-sm text-black">
               <span>Tax:</span>
               <span>{{ formatCurrency(selectedTransaction.taxAmount) }}</span>
             </div>
-            <div class="flex justify-between text-lg font-bold border-t pt-2">
+            <div class="flex justify-between text-lg font-bold text-black border-t border-neutral-medium pt-2">
               <span>Total:</span>
               <span>{{ formatCurrency(selectedTransaction.totalAmount) }}</span>
             </div>
           </div>
 
           <!-- Modal Action Buttons -->
-          <div class="flex justify-end space-x-3 pt-4 border-t">
+          <div class="flex justify-end space-x-3 pt-4 border-t border-neutral-medium">
             <button
               @click="selectedTransaction = null"
-              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              class="px-4 py-2 text-sm font-medium text-black bg-neutral-light border border-neutral-medium rounded-md hover:bg-neutral-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Close
             </button>
             <button
               v-if="selectedTransaction.status === 'Hold'"
               @click="resumeTransaction(selectedTransaction.id)"
-              class="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+              class="px-4 py-2 text-sm font-medium text-black bg-primary border border-transparent rounded-md hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               <Icon name="heroicons:play" class="h-4 w-4 mr-2 inline" />
               Resume
@@ -245,7 +245,7 @@
             <button
               v-if="selectedTransaction.status === 'Completed'"
               @click="printReceipt(selectedTransaction.id)"
-              class="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              class="px-4 py-2 text-sm font-medium text-black bg-primary border border-transparent rounded-md hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               <Icon name="heroicons:printer" class="h-4 w-4 mr-2 inline" />
               Print Receipt
@@ -253,7 +253,7 @@
             <button
               v-if="selectedTransaction.status === 'Completed'"
               @click="showRefundModal(selectedTransaction)"
-              class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              class="px-4 py-2 text-sm font-medium text-white bg-danger border border-transparent rounded-md hover:bg-danger focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger"
             >
               <Icon name="heroicons:arrow-uturn-left" class="h-4 w-4 mr-2 inline" />
               Refund
@@ -267,25 +267,25 @@
     <div v-if="showRefund" class="fixed inset-0 modal-backdrop overflow-y-auto h-full w-full z-50">
       <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 lg:w-1/3 shadow-lg rounded-md bg-white">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-900">Refund Transaction</h3>
-          <button @click="closeRefundModal" class="text-gray-400 hover:text-gray-600">
+          <h3 class="text-lg font-bold text-black">Refund Transaction</h3>
+          <button @click="closeRefundModal" class="text-neutral-gray hover:text-black">
             <Icon name="heroicons:x-mark" class="h-6 w-6" />
           </button>
         </div>
         
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Transaction Number</label>
-            <p class="text-sm text-gray-900 font-medium">{{ refundTransaction?.transactionNumber }}</p>
+            <label class="block text-sm font-medium text-black mb-1">Transaction Number</label>
+            <p class="text-sm text-black font-medium">{{ refundTransaction?.transactionNumber }}</p>
           </div>
           
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Total Amount</label>
-            <p class="text-sm text-gray-900 font-medium">{{ formatCurrency(refundTransaction?.totalAmount || 0) }}</p>
+            <label class="block text-sm font-medium text-black mb-1">Total Amount</label>
+            <p class="text-sm text-black font-medium">{{ formatCurrency(refundTransaction?.totalAmount || 0) }}</p>
           </div>
           
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Refund Reason *</label>
+            <label class="block text-sm font-medium text-black mb-1">Refund Reason *</label>
             <textarea
               v-model="refundReason"
               rows="3"
@@ -295,17 +295,17 @@
             ></textarea>
           </div>
           
-          <div class="flex justify-end space-x-3 pt-4 border-t">
+          <div class="flex justify-end space-x-3 pt-4 border-t border-neutral-medium">
             <button
               @click="closeRefundModal"
-              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              class="px-4 py-2 text-sm font-medium text-black bg-neutral-light border border-neutral-medium rounded-md hover:bg-neutral-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Cancel
             </button>
             <button
               @click="processRefund"
               :disabled="!refundReason.trim() || isProcessingRefund"
-              class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-4 py-2 text-sm font-medium text-white bg-danger border border-transparent rounded-md hover:bg-danger focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Icon v-if="isProcessingRefund" name="heroicons:arrow-path" class="h-4 w-4 mr-2 inline animate-spin" />
               {{ isProcessingRefund ? 'Processing...' : 'Process Refund' }}

@@ -1,20 +1,20 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Header -->
-    <header class="bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg">
+    <header class="bg-gradient-to-r from-primary to-primary-dark text-black shadow-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-6">
           <div class="flex items-center space-x-4">
             <Icon name="heroicons:arrow-path" class="h-8 w-8" />
             <div>
               <h1 class="text-3xl font-bold">Stock Transfers</h1>
-              <p class="text-purple-100 text-lg">Manage inventory transfers between warehouses</p>
+              <p class="text-primary-light text-lg">Manage inventory transfers between warehouses</p>
             </div>
           </div>
           <div class="flex items-center space-x-4">
             <button
               @click="openCreateModal"
-              class="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors flex items-center space-x-2"
+              class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary-light transition-colors flex items-center space-x-2"
             >
               <Icon name="heroicons:plus" class="h-5 w-5" />
               <span>New Stock Transfer</span>
@@ -27,14 +27,14 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <!-- Filters -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="bg-white rounded-lg shadow-sm border border-neutral-medium p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Status</label>
             <select
               v-model="statusFilter"
               @change="loadStockTransfers"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+              class="w-full px-3 py-2 border border-neutral-medium rounded-md focus:ring-primary focus:border-primary"
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
@@ -46,7 +46,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">From Warehouse</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">From Warehouse</label>
             <select
               v-model="fromWarehouseFilter"
               @change="loadStockTransfers"
@@ -59,7 +59,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">To Warehouse</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">To Warehouse</label>
             <select
               v-model="toWarehouseFilter"
               @change="loadStockTransfers"
@@ -72,7 +72,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Date Range</label>
             <input
               v-model="dateFilter"
               type="date"
@@ -84,33 +84,33 @@
       </div>
 
       <!-- Stock Transfers List -->
-      <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-          <h3 class="text-lg font-semibold text-gray-900">Stock Transfers ({{ stockTransfers.length }})</h3>
+      <div class="bg-white shadow-sm rounded-lg border border-neutral-medium overflow-hidden">
+        <div class="px-6 py-4 border-b border-neutral-medium bg-neutral-light">
+          <h3 class="text-lg font-semibold text-black">Stock Transfers ({{ stockTransfers.length }})</h3>
         </div>
         
         <div v-if="loading" class="p-8 text-center">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-          <p class="mt-2 text-gray-600">Loading stock transfers...</p>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <p class="mt-2 text-neutral-gray">Loading stock transfers...</p>
         </div>
 
         <div v-else-if="stockTransfers.length === 0" class="p-8 text-center">
-          <Icon name="heroicons:arrow-path" class="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No stock transfers found</h3>
-          <p class="text-gray-500">Create your first stock transfer to get started.</p>
+          <Icon name="heroicons:arrow-path" class="h-12 w-12 text-neutral-gray mx-auto mb-4" />
+          <h3 class="text-lg font-medium text-black mb-2">No stock transfers found</h3>
+          <p class="text-neutral-gray">Create your first stock transfer to get started.</p>
         </div>
 
-        <div v-else class="divide-y divide-gray-200">
-          <div v-for="st in stockTransfers" :key="st.id" class="p-6 hover:bg-gray-50 transition-colors">
+        <div v-else class="divide-y divide-neutral-medium">
+          <div v-for="st in stockTransfers" :key="st.id" class="p-6 hover:bg-neutral-light transition-colors">
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <div class="flex items-center space-x-4 mb-2">
-                  <h4 class="text-lg font-semibold text-gray-900">{{ st.transferNumber }}</h4>
+                  <h4 class="text-lg font-semibold text-black">{{ st.transferNumber }}</h4>
                   <span :class="getStatusBadgeClass(st.status)" class="px-2 py-1 text-xs font-medium rounded-full">
                     {{ st.status }}
                   </span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-neutral-gray">
                   <div>
                     <span class="font-medium">From:</span> {{ st.fromWarehouse?.warehouseName || 'N/A' }}
                   </div>
@@ -121,14 +121,14 @@
                     <span class="font-medium">Transfer Date:</span> {{ formatDate(st.transferDate) }}
                   </div>
                 </div>
-                <div class="mt-2 text-sm text-gray-600">
+                <div class="mt-2 text-sm text-neutral-gray">
                   <span class="font-medium">Total Items:</span> {{ st.items?.length || 0 }}
                 </div>
               </div>
               <div class="flex items-center space-x-2">
                 <button
                   @click="viewStockTransfer(st)"
-                  class="text-purple-600 hover:text-purple-800 p-2 rounded-lg hover:bg-purple-50"
+                  class="text-primary hover:text-primary-dark p-2 rounded-lg hover:bg-primary-light"
                   title="View Details"
                 >
                   <Icon name="heroicons:eye" class="h-5 w-5" />
@@ -136,7 +136,7 @@
                 <button
                   v-if="st.status === 'PENDING'"
                   @click="approveStockTransfer(st.id)"
-                  class="text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50"
+                  class="text-success hover:text-success-dark p-2 rounded-lg hover:bg-success-light"
                   title="Approve"
                 >
                   <Icon name="heroicons:check" class="h-5 w-5" />
@@ -144,7 +144,7 @@
                 <button
                   v-if="st.status === 'APPROVED'"
                   @click="shipStockTransfer(st.id)"
-                  class="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50"
+                  class="text-primary hover:text-primary-dark p-2 rounded-lg hover:bg-primary-light"
                   title="Ship"
                 >
                   <Icon name="heroicons:truck" class="h-5 w-5" />
@@ -152,7 +152,7 @@
                 <button
                   v-if="st.status === 'SHIPPED'"
                   @click="receiveStockTransfer(st.id)"
-                  class="text-indigo-600 hover:text-indigo-800 p-2 rounded-lg hover:bg-indigo-50"
+                  class="text-primary hover:text-primary-dark p-2 rounded-lg hover:bg-primary-light"
                   title="Receive"
                 >
                   <Icon name="heroicons:inbox-arrow-down" class="h-5 w-5" />
@@ -160,7 +160,7 @@
                 <button
                   v-if="st.status === 'RECEIVED'"
                   @click="completeStockTransfer(st.id)"
-                  class="text-emerald-600 hover:text-emerald-800 p-2 rounded-lg hover:bg-emerald-50"
+                  class="text-success hover:text-success-dark p-2 rounded-lg hover:bg-success-light"
                   title="Complete"
                 >
                   <Icon name="heroicons:check-circle" class="h-5 w-5" />
@@ -168,14 +168,14 @@
                 <button
                   v-if="['PENDING', 'APPROVED'].includes(st.status)"
                   @click="cancelStockTransfer(st.id)"
-                  class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50"
+                  class="text-danger hover:text-danger-dark p-2 rounded-lg hover:bg-danger-light"
                   title="Cancel"
                 >
                   <Icon name="heroicons:x-mark" class="h-5 w-5" />
                 </button>
                 <button
                   @click="editStockTransfer(st)"
-                  class="text-gray-600 hover:text-gray-800 p-2 rounded-lg hover:bg-gray-50"
+                  class="text-neutral-gray hover:text-black p-2 rounded-lg hover:bg-neutral-light"
                   title="Edit"
                 >
                   <Icon name="heroicons:pencil" class="h-5 w-5" />
@@ -191,7 +191,7 @@
     <div v-if="showModal" class="fixed inset-0 modal-backdrop overflow-y-auto h-full w-full z-50">
       <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
         <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">
+          <h3 class="text-lg font-medium text-black mb-4">
             {{ isEditing ? 'Edit Stock Transfer' : 'Create Stock Transfer' }}
           </h3>
           
@@ -545,16 +545,16 @@ const editStockTransfer = (st: StockTransfer) => {
   isEditing.value = true
   form.value = {
     id: st.id,
-    fromWarehouseId: st.fromWarehouseId.toString(),
-    toWarehouseId: st.toWarehouseId.toString(),
+    fromWarehouseId: st.fromWarehouseId?.toString() || '',
+    toWarehouseId: st.toWarehouseId?.toString() || '',
     transferDate: st.transferDate ? st.transferDate.split('T')[0] : '',
     expectedDate: st.expectedDate ? st.expectedDate.split('T')[0] : '',
     notes: st.notes || '',
-    items: st.items.map(item => ({
+    items: st.items?.map(item => ({
       id: item.id,
       productId: item.productId,
       quantityTransferred: item.quantityTransferred
-    }))
+    })) || []
   }
   showModal.value = true
 }

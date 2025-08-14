@@ -1,17 +1,17 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8">
       <!-- Header Section -->
       <div class="mb-4 sm:mb-6 lg:mb-8">
-        <div class="bg-gradient-to-r from-orange-600 to-orange-700 rounded-lg shadow-lg p-4 sm:p-6 lg:p-8 text-white">
+        <div class="bg-gradient-to-r from-primary to-primary-dark rounded-lg shadow-lg p-4 sm:p-6 lg:p-8 text-black">
           <div class="flex items-center justify-between">
             <div>
               <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2">Store Management</h1>
-              <p class="text-orange-100 text-sm sm:text-base lg:text-lg">Manage store locations and information</p>
+              <p class="text-neutral-gray text-sm sm:text-base lg:text-lg">Manage store locations and information</p>
             </div>
             <div class="hidden sm:block">
-              <svg class="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-orange-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
               </svg>
             </div>
@@ -20,12 +20,12 @@
       </div>
 
       <!-- Actions Bar -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 lg:p-6 mb-4 sm:mb-6">
+      <div class="bg-white rounded-lg shadow-sm border border-neutral-medium p-3 sm:p-4 lg:p-6 mb-4 sm:mb-6">
         <div class="flex flex-col gap-3 sm:gap-4">
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div class="relative flex-1">
               <div class="absolute inset-y-0 left-0 pl-2.5 sm:pl-3 flex items-center pointer-events-none">
-                <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-4 w-4 sm:h-5 sm:w-5 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
@@ -33,12 +33,12 @@
                 v-model="searchQuery"
                 type="text"
                 placeholder="Search stores..."
-                class="pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-full text-sm sm:text-base"
+                class="pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 border border-neutral-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary w-full text-sm sm:text-base"
               />
             </div>
             <select
               v-model="statusFilter"
-              class="px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm sm:text-base"
+              class="px-3 sm:px-4 py-2 sm:py-2.5 border border-neutral-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-base"
             >
               <option value="">All Stores</option>
               <option value="active">Active Only</option>
@@ -49,7 +49,7 @@
             <button
               @click="loadStores"
               :disabled="loading"
-              class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-gray-300 text-xs sm:text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 transition-colors"
+              class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-neutral-medium text-xs sm:text-sm font-medium rounded-md text-neutral-gray bg-neutral-light hover:bg-neutral-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
             >
               <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -59,7 +59,7 @@
             </button>
             <button
               @click="openCreateModal"
-              class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-transparent text-xs sm:text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+              class="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-transparent text-xs sm:text-sm font-medium rounded-md text-black bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
             >
               <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -72,44 +72,44 @@
 
         <!-- Loading State -->
         <div v-if="loading" class="text-center py-6 sm:py-8">
-          <div class="inline-block animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-orange-600"></div>
-          <p class="mt-2 text-gray-600 text-sm sm:text-base">Loading stores...</p>
+          <div class="inline-block animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-primary"></div>
+          <p class="mt-2 text-neutral-gray text-sm sm:text-base">Loading stores...</p>
         </div>
 
         <!-- Desktop Table -->
-        <div v-else class="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div v-else class="hidden lg:block bg-white rounded-lg shadow-sm border border-neutral-medium overflow-hidden">
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-neutral-medium">
+              <thead class="bg-neutral-light">
                 <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Store Name</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tax Rate</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Currency</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Store Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Code</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Address</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Phone</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Tax Rate</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Currency</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-neutral-gray uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr v-for="store in filteredStores" :key="store.id" class="hover:bg-gray-50">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ store.storeName }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ store.storeCode }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ store.address || '-' }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ store.phone || '-' }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ (store.taxRate * 100).toFixed(2) }}%</td>
-                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ store.currency }}</td>
+              <tbody class="bg-white divide-y divide-neutral-medium">
+                <tr v-for="store in filteredStores" :key="store.id" class="hover:bg-neutral-light">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">{{ store.storeName }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-gray">{{ store.storeCode }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-gray">{{ store.address || '-' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-gray">{{ store.phone || '-' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-gray">{{ (store.taxRate * 100).toFixed(2) }}%</td>
+                   <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-gray">{{ store.currency }}</td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="store.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" 
+                    <span :class="store.isActive ? 'bg-success-light text-success border border-success' : 'bg-danger-light text-danger border border-danger'" 
                           class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                       {{ store.isActive ? 'Active' : 'Inactive' }}
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex space-x-2">
-                      <button @click="openEditModal(store)" class="text-indigo-600 hover:text-indigo-900 transition-colors">Edit</button>
-                      <button @click="confirmDelete(store)" class="text-red-600 hover:text-red-900 transition-colors">Delete</button>
+                      <button @click="openEditModal(store)" class="text-primary hover:text-primary-dark transition-colors">Edit</button>
+                      <button @click="confirmDelete(store)" class="text-danger hover:text-danger-dark transition-colors">Delete</button>
                     </div>
                   </td>
                 </tr>
@@ -123,19 +123,19 @@
           <div
             v-for="store in filteredStores"
             :key="store.id"
-            class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4"
+            class="bg-white rounded-lg shadow-sm border border-neutral-medium p-3 sm:p-4"
           >
             <div class="flex items-start justify-between mb-3">
               <div class="flex-1 min-w-0">
-                <h3 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ store.storeName }}</h3>
-                <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Code: {{ store.storeCode }}</p>
+                <h3 class="text-sm sm:text-base font-semibold text-black truncate">{{ store.storeName }}</h3>
+                <p class="text-xs sm:text-sm text-neutral-gray mt-0.5">Code: {{ store.storeCode }}</p>
               </div>
               <span
                 :class="[
                   'inline-flex px-2 py-1 text-xs font-semibold rounded-full ml-2 flex-shrink-0',
                   store.isActive
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-red-100 text-red-800'
+                    ? 'bg-success-light text-success border border-success'
+                    : 'bg-danger-light text-danger border border-danger'
                 ]"
               >
                 {{ store.isActive ? 'Active' : 'Inactive' }}
@@ -144,40 +144,40 @@
             
             <div class="space-y-2 mb-3">
               <div class="flex items-start">
-                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-neutral-gray mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
-                <span class="text-xs sm:text-sm text-gray-600 break-words">{{ store.address || '-' }}</span>
+                <span class="text-xs sm:text-sm text-neutral-gray break-words">{{ store.address || '-' }}</span>
               </div>
               
               <div class="flex items-center">
-                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-neutral-gray mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                 </svg>
-                <span class="text-xs sm:text-sm text-gray-600">{{ store.phone || '-' }}</span>
+                <span class="text-xs sm:text-sm text-neutral-gray">{{ store.phone || '-' }}</span>
               </div>
               
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                  <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-3 h-3 sm:w-4 sm:h-4 text-neutral-gray mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                   </svg>
-                  <span class="text-xs sm:text-sm text-gray-600">Tax: {{ (store.taxRate * 100).toFixed(2) }}%</span>
+                  <span class="text-xs sm:text-sm text-neutral-gray">Tax: {{ (store.taxRate * 100).toFixed(2) }}%</span>
                 </div>
                 <div class="flex items-center">
-                  <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-3 h-3 sm:w-4 sm:h-4 text-neutral-gray mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                   </svg>
-                  <span class="text-xs sm:text-sm text-gray-600">{{ store.currency }}</span>
+                  <span class="text-xs sm:text-sm text-neutral-gray">{{ store.currency }}</span>
                 </div>
               </div>
             </div>
             
-            <div class="flex flex-col sm:flex-row gap-2 pt-2 border-t border-gray-100">
+            <div class="flex flex-col sm:flex-row gap-2 pt-2 border-t border-neutral-medium">
               <button
                 @click="openEditModal(store)"
-                class="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-xs sm:text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                class="flex-1 inline-flex items-center justify-center px-3 py-2 border border-neutral-medium text-xs sm:text-sm font-medium rounded-md text-primary bg-primary-light hover:bg-primary hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
               >
                 <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -186,7 +186,7 @@
               </button>
               <button
                 @click="confirmDelete(store)"
-                class="flex-1 inline-flex items-center justify-center px-3 py-2 border border-red-300 text-xs sm:text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                class="flex-1 inline-flex items-center justify-center px-3 py-2 border border-danger text-xs sm:text-sm font-medium rounded-md text-danger bg-danger-light hover:bg-danger hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger transition-colors"
               >
                 <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -199,15 +199,15 @@
 
         <!-- Empty State -->
         <div v-if="!loading && filteredStores.length === 0" class="text-center py-8 sm:py-12 lg:py-16">
-          <svg class="mx-auto h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="mx-auto h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m5 0v-9a2 2 0 00-2-2H8a2 2 0 00-2 2v9m8 0V9a2 2 0 012-2h2a2 2 0 012 2v9M7 7h.01M7 3h.01"></path>
           </svg>
-          <h3 class="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-gray-900">No stores found</h3>
-          <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-500">Get started by creating your first store.</p>
+          <h3 class="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-black">No stores found</h3>
+          <p class="mt-1 sm:mt-2 text-sm sm:text-base text-neutral-gray">Get started by creating your first store.</p>
           <div class="mt-4 sm:mt-6">
             <button
               @click="openCreateModal"
-              class="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 border border-transparent text-sm sm:text-base font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+              class="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 border border-transparent text-sm sm:text-base font-medium rounded-md text-black bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
             >
               <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>

@@ -1,20 +1,20 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Header -->
-    <header class="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg">
+    <header class="bg-gradient-to-r from-primary to-primary-dark text-black shadow-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-6">
           <div class="flex items-center space-x-4">
             <Icon name="heroicons:document-text" class="h-8 w-8" />
             <div>
               <h1 class="text-3xl font-bold">Purchase Orders</h1>
-              <p class="text-blue-100 text-lg">Manage purchase orders and supplier relationships</p>
+              <p class="text-primary-light text-lg">Manage purchase orders and supplier relationships</p>
             </div>
           </div>
           <div class="flex items-center space-x-4">
             <button
               @click="openCreateModal"
-              class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center space-x-2"
+              class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary-light transition-colors flex items-center space-x-2"
             >
               <Icon name="heroicons:plus" class="h-5 w-5" />
               <span>New Purchase Order</span>
@@ -27,14 +27,14 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <!-- Filters -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="bg-white rounded-lg shadow-sm border border-neutral-medium p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Status</label>
             <select
               v-model="statusFilter"
               @change="loadPurchaseOrders"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              class="w-full px-3 py-2 border border-neutral-medium rounded-md focus:ring-primary focus:border-primary"
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
@@ -44,7 +44,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Supplier</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Supplier</label>
             <select
               v-model="supplierFilter"
               @change="loadPurchaseOrders"
@@ -57,7 +57,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Start Date</label>
             <input
               v-model="startDate"
               type="date"
@@ -66,7 +66,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">End Date</label>
             <input
               v-model="endDate"
               type="date"
@@ -78,33 +78,33 @@
       </div>
 
       <!-- Purchase Orders List -->
-      <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-          <h3 class="text-lg font-semibold text-gray-900">Purchase Orders ({{ purchaseOrders.length }})</h3>
+      <div class="bg-white shadow-sm rounded-lg border border-neutral-medium overflow-hidden">
+        <div class="px-6 py-4 border-b border-neutral-medium bg-neutral-light">
+          <h3 class="text-lg font-semibold text-black">Purchase Orders ({{ purchaseOrders.length }})</h3>
         </div>
         
         <div v-if="loading" class="p-8 text-center">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p class="mt-2 text-gray-600">Loading purchase orders...</p>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <p class="mt-2 text-neutral-gray">Loading purchase orders...</p>
         </div>
 
         <div v-else-if="purchaseOrders.length === 0" class="p-8 text-center">
-          <Icon name="heroicons:document-text" class="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No purchase orders found</h3>
-          <p class="text-gray-500">Create your first purchase order to get started.</p>
+          <Icon name="heroicons:document-text" class="h-12 w-12 text-neutral-gray mx-auto mb-4" />
+          <h3 class="text-lg font-medium text-black mb-2">No purchase orders found</h3>
+          <p class="text-neutral-gray">Create your first purchase order to get started.</p>
         </div>
 
-        <div v-else class="divide-y divide-gray-200">
-          <div v-for="po in purchaseOrders" :key="po.id" class="p-6 hover:bg-gray-50 transition-colors">
+        <div v-else class="divide-y divide-neutral-medium">
+          <div v-for="po in purchaseOrders" :key="po.id" class="p-6 hover:bg-neutral-light transition-colors">
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <div class="flex items-center space-x-4 mb-2">
-                  <h4 class="text-lg font-semibold text-gray-900">{{ po.orderNumber }}</h4>
+                  <h4 class="text-lg font-semibold text-black">{{ po.orderNumber }}</h4>
                   <span :class="getStatusBadgeClass(po.status)" class="px-2 py-1 text-xs font-medium rounded-full">
                     {{ po.status }}
                   </span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-neutral-gray">
                   <div>
                     <span class="font-medium">Supplier:</span> {{ po.supplier?.supplierName || 'N/A' }}
                   </div>
@@ -115,15 +115,15 @@
                     <span class="font-medium">Expected Date:</span> {{ formatDate(po.expectedDeliveryDate) }}
                   </div>
                 </div>
-                <div class="mt-2 text-sm text-gray-600">
+                <div class="mt-2 text-sm text-neutral-gray">
                   <span class="font-medium">Total Amount:</span> 
-                  <span class="text-lg font-bold text-green-600">${{ po.totalAmount?.toFixed(2) || '0.00' }}</span>
+                  <span class="text-lg font-bold text-success">${{ po.totalAmount?.toFixed(2) || '0.00' }}</span>
                 </div>
               </div>
               <div class="flex items-center space-x-2">
                 <button
                   @click="viewPurchaseOrder(po)"
-                  class="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50"
+                  class="text-primary hover:text-primary-dark p-2 rounded-lg hover:bg-primary-light"
                   title="View Details"
                 >
                   <Icon name="heroicons:eye" class="h-5 w-5" />
@@ -131,7 +131,7 @@
                 <button
                   v-if="po.status === 'PENDING'"
                   @click="approvePurchaseOrder(po.id)"
-                  class="text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50"
+                  class="text-success hover:text-success-dark p-2 rounded-lg hover:bg-success-light"
                   title="Approve"
                 >
                   <Icon name="heroicons:check" class="h-5 w-5" />
@@ -139,14 +139,14 @@
                 <button
                   v-if="po.status === 'PENDING'"
                   @click="cancelPurchaseOrder(po.id)"
-                  class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50"
+                  class="text-danger hover:text-danger-dark p-2 rounded-lg hover:bg-danger-light"
                   title="Cancel"
                 >
                   <Icon name="heroicons:x-mark" class="h-5 w-5" />
                 </button>
                 <button
                   @click="editPurchaseOrder(po)"
-                  class="text-gray-600 hover:text-gray-800 p-2 rounded-lg hover:bg-gray-50"
+                  class="text-neutral-gray hover:text-black p-2 rounded-lg hover:bg-neutral-light"
                   title="Edit"
                 >
                   <Icon name="heroicons:pencil" class="h-5 w-5" />
@@ -162,18 +162,18 @@
     <div v-if="showModal" class="fixed inset-0 modal-backdrop overflow-y-auto h-full w-full z-50">
       <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
         <div class="mt-3">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">
+          <h3 class="text-lg font-medium text-black mb-4">
             {{ isEditing ? 'Edit Purchase Order' : 'Create Purchase Order' }}
           </h3>
           
           <form @submit.prevent="savePurchaseOrder" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Supplier *</label>
+                <label class="block text-sm font-medium text-neutral-gray mb-1">Supplier *</label>
                 <select
                   v-model="form.supplierId"
                   required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full px-3 py-2 border border-neutral-medium rounded-md focus:ring-primary focus:border-primary"
                 >
                   <option value="">Select supplier</option>
                   <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
@@ -507,15 +507,15 @@ const editPurchaseOrder = (po: PurchaseOrder) => {
   isEditing.value = true
   form.value = {
     id: po.id,
-    supplierId: po.supplierId.toString(),
+    supplierId: po.supplierId?.toString() || '',
     expectedDeliveryDate: po.expectedDeliveryDate ? po.expectedDeliveryDate.split('T')[0] : '',
     notes: po.notes || '',
-    items: po.items.map(item => ({
+    items: po.items?.map(item => ({
       id: item.id,
       productId: item.productId,
       quantityOrdered: item.quantityOrdered,
       unitCost: item.unitCost
-    }))
+    })) || []
   }
   showModal.value = true
 }

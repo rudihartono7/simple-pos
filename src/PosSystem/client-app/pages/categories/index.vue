@@ -4,13 +4,13 @@
     <div class="mb-8">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900">Category Management</h1>
-          <p class="mt-2 text-sm text-gray-600">Manage product categories and classifications</p>
+          <h1 class="text-3xl font-bold text-black">Category Management</h1>
+          <p class="mt-2 text-sm text-neutral-gray">Manage product categories and classifications</p>
         </div>
         <div class="mt-4 sm:mt-0">
           <button
             @click="showCreateModal = true"
-            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-lg hover:shadow-xl"
+            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary to-primary-dark text-black text-sm font-medium rounded-xl hover:from-primary-dark hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -22,12 +22,12 @@
     </div>
 
     <!-- Search and Filters -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+    <div class="bg-white rounded-2xl shadow-sm border border-neutral-medium p-6 mb-8">
       <div class="flex flex-col lg:flex-row gap-4">
         <div class="flex-1">
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="h-5 w-5 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
             </div>
@@ -35,17 +35,17 @@
               v-model="searchTerm"
               type="text"
               placeholder="Search categories by name or description..."
-              class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+              class="block w-full pl-10 pr-3 py-3 border border-neutral-medium rounded-xl leading-5 bg-neutral-light placeholder-neutral-gray focus:outline-none focus:placeholder-neutral-medium focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
               @input="filterCategories"
             />
           </div>
         </div>
         <div class="flex flex-wrap gap-3">
-          <label class="inline-flex items-center px-4 py-3 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 transition-all duration-200 cursor-pointer">
+          <label class="inline-flex items-center px-4 py-3 bg-neutral-light text-neutral-gray rounded-xl text-sm font-medium hover:bg-neutral-medium transition-all duration-200 cursor-pointer">
             <input
               v-model="showActiveOnly"
               type="checkbox"
-              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-2"
+              class="h-4 w-4 text-primary focus:ring-primary border-neutral-medium rounded mr-2"
               @change="filterCategories"
             />
             Active Only
@@ -53,7 +53,7 @@
           <button
             @click="refreshCategories"
             :disabled="loading"
-            class="px-4 py-3 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 transition-all duration-200 disabled:opacity-50"
+            class="px-4 py-3 bg-neutral-light text-neutral-gray rounded-xl text-sm font-medium hover:bg-neutral-medium transition-all duration-200 disabled:opacity-50"
           >
             <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -67,22 +67,22 @@
     <!-- Loading State -->
     <div v-if="loading" class="flex items-center justify-center py-12">
       <div class="text-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-        <p class="mt-4 text-gray-600">Loading categories...</p>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+        <p class="mt-4 text-neutral-gray">Loading categories...</p>
       </div>
     </div>
 
     <!-- Empty State -->
     <div v-else-if="filteredCategories.length === 0" class="text-center py-12">
-      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="mx-auto h-12 w-12 text-neutral-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
       </svg>
-      <h3 class="mt-4 text-lg font-medium text-gray-900">No categories found</h3>
-      <p class="mt-2 text-gray-500">Get started by creating your first category.</p>
+      <h3 class="mt-4 text-lg font-medium text-black">No categories found</h3>
+      <p class="mt-2 text-neutral-gray">Get started by creating your first category.</p>
       <div class="mt-6">
         <button
           @click="showCreateModal = true"
-          class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors duration-200"
+          class="inline-flex items-center px-4 py-2 bg-primary text-black text-sm font-medium rounded-xl hover:bg-primary-dark transition-colors duration-200"
         >
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -97,7 +97,7 @@
       <div
         v-for="category in filteredCategories"
         :key="category.id"
-        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition-all duration-200 hover:border-indigo-200"
+        class="bg-white rounded-2xl shadow-sm border border-neutral-medium p-6 hover:shadow-lg transition-all duration-200 hover:border-primary"
       >
         <!-- Category Header -->
         <div class="flex items-start justify-between mb-4">

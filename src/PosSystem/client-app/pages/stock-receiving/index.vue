@@ -1,20 +1,20 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-neutral-light">
     <!-- Header -->
-    <header class="bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg">
+    <header class="bg-gradient-to-r from-primary to-primary-dark text-black shadow-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-6">
           <div class="flex items-center space-x-4">
             <Icon name="heroicons:truck" class="h-8 w-8" />
             <div>
               <h1 class="text-3xl font-bold">Stock Receiving</h1>
-              <p class="text-green-100 text-lg">Manage incoming stock and deliveries</p>
+              <p class="text-primary-light text-lg">Manage incoming stock and deliveries</p>
             </div>
           </div>
           <div class="flex items-center space-x-4">
             <button
               @click="openCreateModal"
-              class="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors flex items-center space-x-2"
+              class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary-light transition-colors flex items-center space-x-2"
             >
               <Icon name="heroicons:plus" class="h-5 w-5" />
               <span>New Stock Receiving</span>
@@ -27,14 +27,14 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <!-- Filters -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="bg-white rounded-lg shadow-sm border border-neutral-medium p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Status</label>
             <select
               v-model="statusFilter"
               @change="loadStockReceivings"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+              class="w-full px-3 py-2 border border-neutral-medium rounded-md focus:ring-primary focus:border-primary"
             >
               <option value="">All Status</option>
               <option value="PENDING">Pending</option>
@@ -43,7 +43,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Supplier</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Supplier</label>
             <select
               v-model="supplierFilter"
               @change="loadStockReceivings"
@@ -56,7 +56,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Purchase Order</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Purchase Order</label>
             <select
               v-model="purchaseOrderFilter"
               @change="loadStockReceivings"
@@ -69,35 +69,35 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Show Pending Only</label>
+            <label class="block text-sm font-medium text-neutral-gray mb-2">Show Pending Only</label>
             <label class="flex items-center">
               <input
                 v-model="pendingOnly"
                 @change="loadStockReceivings"
                 type="checkbox"
-                class="rounded border-gray-300 text-green-600 focus:ring-green-500"
+                class="rounded border-neutral-medium text-primary focus:ring-primary"
               />
-              <span class="ml-2 text-sm text-gray-700">Pending only</span>
+              <span class="ml-2 text-sm text-neutral-gray">Pending only</span>
             </label>
           </div>
         </div>
       </div>
 
       <!-- Stock Receivings List -->
-      <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-          <h3 class="text-lg font-semibold text-gray-900">Stock Receivings ({{ stockReceivings.length }})</h3>
+      <div class="bg-white shadow-sm rounded-lg border border-neutral-medium overflow-hidden">
+        <div class="px-6 py-4 border-b border-neutral-medium bg-neutral-light">
+          <h3 class="text-lg font-semibold text-black">Stock Receivings ({{ stockReceivings.length }})</h3>
         </div>
         
         <div v-if="loading" class="p-8 text-center">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-          <p class="mt-2 text-gray-600">Loading stock receivings...</p>
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <p class="mt-2 text-neutral-gray">Loading stock receivings...</p>
         </div>
 
         <div v-else-if="stockReceivings.length === 0" class="p-8 text-center">
-          <Icon name="heroicons:truck" class="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No stock receivings found</h3>
-          <p class="text-gray-500">Create your first stock receiving to get started.</p>
+          <Icon name="heroicons:truck" class="h-12 w-12 text-neutral-gray mx-auto mb-4" />
+          <h3 class="text-lg font-medium text-black mb-2">No stock receivings found</h3>
+          <p class="text-neutral-gray">Create your first stock receiving to get started.</p>
         </div>
 
         <div v-else class="divide-y divide-gray-200">
@@ -555,17 +555,17 @@ const editStockReceiving = (sr: StockReceiving) => {
   isEditing.value = true
   form.value = {
     id: sr.id,
-    supplierId: sr.supplierId.toString(),
+    supplierId: sr.supplierId?.toString() || '',
     purchaseOrderId: sr.purchaseOrderId?.toString() || '',
     receivedDate: sr.receivedDate ? sr.receivedDate.split('T')[0] : '',
     invoiceNumber: sr.invoiceNumber || '',
     notes: sr.notes || '',
-    items: sr.items.map(item => ({
+    items: sr.items?.map(item => ({
       id: item.id,
       productId: item.productId,
       quantityReceived: item.quantityReceived,
       unitCost: item.unitCost || 0
-    }))
+    })) || []
   }
   showModal.value = true
 }
