@@ -366,6 +366,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError, showWarning } = useAlert()
+
 interface Supplier {
   id: number
   supplierName: string
@@ -546,7 +548,7 @@ const removeItem = (index: number) => {
 
 const savePurchaseOrder = async () => {
   if (!form.value.supplierId || form.value.items.length === 0) {
-    alert('Please select a supplier and add at least one item')
+    showWarning('Please select a supplier and add at least one item')
     return
   }
 
@@ -554,7 +556,7 @@ const savePurchaseOrder = async () => {
   try {
     const token = useCookie('auth-token')
     const payload = {
-      supplierId: parseInt(form.value.supplierId),
+      supplierId: Number(form.value.supplierId),
       expectedDeliveryDate: form.value.expectedDeliveryDate || null,
       notes: form.value.notes,
       items: form.value.items.map(item => ({
@@ -588,7 +590,7 @@ const savePurchaseOrder = async () => {
     await loadPurchaseOrders()
   } catch (error) {
     console.error('Failed to save purchase order:', error)
-    alert('Failed to save purchase order')
+    showError('Failed to save purchase order')
   } finally {
     saving.value = false
   }
@@ -608,7 +610,7 @@ const approvePurchaseOrder = async (id: number) => {
     await loadPurchaseOrders()
   } catch (error) {
     console.error('Failed to approve purchase order:', error)
-    alert('Failed to approve purchase order')
+    showError('Failed to approve purchase order')
   }
 }
 
@@ -626,7 +628,7 @@ const cancelPurchaseOrder = async (id: number) => {
     await loadPurchaseOrders()
   } catch (error) {
     console.error('Failed to cancel purchase order:', error)
-    alert('Failed to cancel purchase order')
+    showError('Failed to cancel purchase order')
   }
 }
 

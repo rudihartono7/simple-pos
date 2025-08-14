@@ -279,6 +279,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showSuccess, showError, showWarning } = useAlert()
+
 interface Category {
   id: number
   categoryName: string
@@ -334,7 +336,7 @@ const loadCategories = async () => {
     filterCategories()
   } catch (error) {
     console.error('Failed to load categories:', error)
-    alert('Failed to load categories')
+    showError('Failed to load categories')
   } finally {
     loading.value = false
   }
@@ -396,7 +398,7 @@ const deleteCategory = async (category: Category) => {
     })
     
     if (hasProductsResponse.hasProducts) {
-      alert('Cannot delete category that has products. Please remove or reassign products first.')
+      showWarning('Cannot delete category that has products. Please remove or reassign products first.')
       return
     }
     
@@ -409,10 +411,10 @@ const deleteCategory = async (category: Category) => {
     })
     
     await loadCategories()
-    alert('Category deleted successfully!')
+    showSuccess('Category deleted successfully!')
   } catch (error) {
     console.error('Failed to delete category:', error)
-    alert('Failed to delete category')
+    showError('Failed to delete category')
   }
 }
 
@@ -435,7 +437,7 @@ const saveCategory = async () => {
         },
         baseURL: config.public.apiBase
       })
-      alert('Category created successfully!')
+      showSuccess('Category created successfully!')
     } else {
       await $fetch(`/api/category/${editingCategory.value?.id}`, {
         method: 'PUT',
@@ -445,14 +447,14 @@ const saveCategory = async () => {
         },
         baseURL: config.public.apiBase
       })
-      alert('Category updated successfully!')
+      showSuccess('Category updated successfully!')
     }
     
     closeModal()
     await loadCategories()
   } catch (error) {
     console.error('Failed to save category:', error)
-    alert('Failed to save category')
+    showError('Failed to save category')
   } finally {
     saving.value = false
   }

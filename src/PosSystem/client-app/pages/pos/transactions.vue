@@ -307,6 +307,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showSuccess, showError } = useAlert()
 const { user, logout } = useAuth()
 const config = useRuntimeConfig()
 
@@ -450,7 +451,7 @@ const viewTransaction = async (transaction: Transaction) => {
     selectedTransaction.value = fullTransaction
   } catch (error) {
     console.error('Failed to load transaction details:', error)
-    alert('Failed to load transaction details')
+    showError('Failed to load transaction details')
   }
 }
 
@@ -470,7 +471,7 @@ const resumeTransaction = async (transaction: Transaction) => {
     await navigateTo('/pos')
   } catch (error) {
     console.error('Failed to resume transaction:', error)
-    alert('Failed to resume transaction')
+    showError('Failed to resume transaction')
   }
 }
 
@@ -500,7 +501,7 @@ const printReceipt = async (transactionId: number) => {
     }
   } catch (error) {
     console.error('Failed to print receipt:', error)
-    alert('Failed to print receipt')
+    showError('Failed to print receipt')
   }
 }
 
@@ -520,11 +521,11 @@ const refundTransaction = async (transaction: Transaction) => {
       baseURL: config.public.apiBase
     })
 
-    alert('Transaction refunded successfully!')
+    showSuccess('Transaction refunded successfully!')
     await loadTransactions()
   } catch (error) {
     console.error('Failed to refund transaction:', error)
-    alert('Failed to refund transaction')
+    showError('Failed to refund transaction')
   }
 }
 

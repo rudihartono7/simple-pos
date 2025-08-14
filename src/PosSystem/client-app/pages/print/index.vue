@@ -258,6 +258,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError, showWarning } = useAlert()
+
 interface Transaction {
   id: number
   transactionNumber: string
@@ -322,7 +324,7 @@ const generateSingleReceipt = async (format: 'pdf' | 'html') => {
     }
   } catch (error) {
     console.error('Failed to generate receipt:', error)
-    alert('Failed to generate receipt')
+    showError('Failed to generate receipt')
   } finally {
     loading.value = false
   }
@@ -367,7 +369,7 @@ const generateSingleBill = async (format: 'pdf' | 'html') => {
     }
   } catch (error) {
     console.error('Failed to generate bill:', error)
-    alert('Failed to generate bill')
+    showError('Failed to generate bill')
   } finally {
     loading.value = false
   }
@@ -382,7 +384,7 @@ const generateMultipleReceipts = async () => {
     const ids = multipleTransactionIds.value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id))
     
     if (ids.length === 0) {
-      alert('Please enter valid transaction IDs')
+      showWarning('Please enter valid transaction IDs')
       return
     }
     
@@ -410,7 +412,7 @@ const generateMultipleReceipts = async () => {
     }
   } catch (error) {
     console.error('Failed to generate multiple receipts:', error)
-    alert('Failed to generate multiple receipts')
+    showError('Failed to generate multiple receipts')
   } finally {
     loading.value = false
   }

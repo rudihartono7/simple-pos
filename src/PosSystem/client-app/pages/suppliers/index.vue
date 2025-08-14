@@ -286,6 +286,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError, showWarning } = useAlert()
+
 interface Supplier {
   id: number
   supplierName: string
@@ -415,7 +417,7 @@ const closeModal = () => {
 
 const saveSupplier = async () => {
   if (!form.value.supplierName.trim() || !form.value.supplierCode.trim()) {
-    alert('Please fill in all required fields')
+    showWarning('Please fill in all required fields')
     return
   }
 
@@ -458,7 +460,7 @@ const saveSupplier = async () => {
     await loadSuppliers()
   } catch (error) {
     console.error('Failed to save supplier:', error)
-    alert('Failed to save supplier')
+    showError('Failed to save supplier')
   } finally {
     saving.value = false
   }
@@ -478,7 +480,7 @@ const deleteSupplier = async (id: number) => {
     await loadSuppliers()
   } catch (error) {
     console.error('Failed to delete supplier:', error)
-    alert('Failed to delete supplier. It may have existing purchase orders or transactions.')
+    showError('Failed to delete supplier. It may have existing purchase orders or transactions.')
   }
 }
 

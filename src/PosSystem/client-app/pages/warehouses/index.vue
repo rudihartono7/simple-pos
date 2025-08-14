@@ -337,6 +337,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError, showWarning } = useAlert()
+
 interface Product {
   id: number
   productName: string
@@ -478,7 +480,7 @@ const closeModal = () => {
 
 const saveWarehouse = async () => {
   if (!form.value.warehouseName.trim() || !form.value.warehouseCode.trim()) {
-    alert('Please fill in all required fields')
+    showWarning('Please fill in all required fields')
     return
   }
 
@@ -519,7 +521,7 @@ const saveWarehouse = async () => {
     await loadWarehouses()
   } catch (error) {
     console.error('Failed to save warehouse:', error)
-    alert('Failed to save warehouse')
+    showError('Failed to save warehouse')
   } finally {
     saving.value = false
   }
@@ -539,7 +541,7 @@ const deleteWarehouse = async (id: number) => {
     await loadWarehouses()
   } catch (error) {
     console.error('Failed to delete warehouse:', error)
-    alert('Failed to delete warehouse. It may have existing stock or transactions.')
+    showError('Failed to delete warehouse. It may have existing stock or transactions.')
   }
 }
 

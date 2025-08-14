@@ -482,6 +482,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showSuccess, showError, showWarning } = useAlert()
+
 // Types
 interface Product {
   id: number
@@ -635,13 +637,13 @@ const handleImageSelect = (event: Event) => {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
-      alert('Please select a valid image file (JPG, PNG, GIF, or WebP)')
+      showWarning('Please select a valid image file (JPG, PNG, GIF, or WebP)')
       return
     }
     
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('File size cannot exceed 5MB')
+      showWarning('File size cannot exceed 5MB')
       return
     }
     
@@ -746,7 +748,7 @@ const deleteProduct = async (product: Product) => {
       await fetchProducts()
     } catch (error) {
       console.error('Failed to delete product:', error)
-      alert('Failed to delete product')
+      showError('Failed to delete product')
     }
   }
 }
@@ -801,7 +803,7 @@ const saveProduct = async () => {
     closeModal()
   } catch (error) {
     console.error('Failed to save product:', error)
-    alert('Failed to save product')
+    showError('Failed to save product')
   } finally {
     saving.value = false
   }
@@ -825,7 +827,7 @@ const saveStockUpdate = async () => {
     await fetchProducts()
   } catch (error) {
     console.error('Failed to update stock:', error)
-    alert('Failed to update stock')
+    showError('Failed to update stock')
   } finally {
     saving.value = false
   }

@@ -343,6 +343,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError } = useAlert()
+
 const { user, logout } = useAuth()
 const config = useRuntimeConfig()
 
@@ -447,7 +449,7 @@ const generateReport = async () => {
     reportGenerated.value = true
   } catch (error) {
     console.error('Failed to generate report:', error)
-    alert('Failed to generate report')
+    showError('Failed to generate report')
     reportGenerated.value = true
   } finally {
     loading.value = false

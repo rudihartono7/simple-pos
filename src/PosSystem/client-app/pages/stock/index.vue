@@ -328,6 +328,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError } = useAlert()
+
 interface StockMovement {
   id: number
   productId: number
@@ -499,7 +501,7 @@ const recordMovement = async () => {
     }
   } catch (error) {
     console.error('Failed to record movement:', error)
-    alert('Failed to record stock movement')
+    showError('Failed to record stock movement')
   } finally {
     recording.value = false
   }

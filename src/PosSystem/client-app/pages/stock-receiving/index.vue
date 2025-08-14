@@ -389,6 +389,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError, showWarning } = useAlert()
+
 interface Supplier {
   id: number
   supplierName: string
@@ -596,7 +598,7 @@ const removeItem = (index: number) => {
 
 const saveStockReceiving = async () => {
   if (!form.value.supplierId || form.value.items.length === 0) {
-    alert('Please select a supplier and add at least one item')
+    showWarning('Please select a supplier and add at least one item')
     return
   }
 
@@ -604,15 +606,15 @@ const saveStockReceiving = async () => {
   try {
     const token = useCookie('auth-token')
     const payload = {
-      supplierId: parseInt(form.value.supplierId),
-      purchaseOrderId: form.value.purchaseOrderId ? parseInt(form.value.purchaseOrderId) : null,
+      supplierId: Number(form.value.supplierId),
+      purchaseOrderId: form.value.purchaseOrderId ? Number(form.value.purchaseOrderId) : null,
       receivedDate: form.value.receivedDate,
       invoiceNumber: form.value.invoiceNumber || null,
       notes: form.value.notes,
       items: form.value.items.map(item => ({
-        productId: item.productId,
-        quantityReceived: item.quantityReceived,
-        unitCost: item.unitCost || 0
+        productId: Number(item.productId),
+        quantityReceived: Number(item.quantityReceived),
+        unitCost: Number(item.unitCost) || 0
       }))
     }
 
@@ -640,7 +642,7 @@ const saveStockReceiving = async () => {
     await loadStockReceivings()
   } catch (error) {
     console.error('Failed to save stock receiving:', error)
-    alert('Failed to save stock receiving')
+    showError('Failed to save stock receiving')
   } finally {
     saving.value = false
   }
@@ -660,7 +662,7 @@ const processStockReceiving = async (id: number) => {
     await loadStockReceivings()
   } catch (error) {
     console.error('Failed to process stock receiving:', error)
-    alert('Failed to process stock receiving')
+    showError('Failed to process stock receiving')
   }
 }
 

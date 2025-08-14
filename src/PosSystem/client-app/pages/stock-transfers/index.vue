@@ -402,6 +402,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { showError, showWarning } = useAlert()
+
 interface Warehouse {
   id: number
   warehouseName: string
@@ -475,8 +477,8 @@ const loadStockTransfers = async () => {
     
     const params = new URLSearchParams()
     if (statusFilter.value) params.append('status', statusFilter.value)
-    if (fromWarehouseFilter.value) params.append('fromWarehouseId', fromWarehouseFilter.value)
-    if (toWarehouseFilter.value) params.append('toWarehouseId', toWarehouseFilter.value)
+    if (fromWarehouseFilter.value) params.append('fromWarehouseId', fromWarehouseFilter.value.toString())
+    if (toWarehouseFilter.value) params.append('toWarehouseId', toWarehouseFilter.value.toString())
     if (dateFilter.value) params.append('date', dateFilter.value)
     
     if (params.toString()) {
@@ -584,12 +586,12 @@ const removeItem = (index: number) => {
 
 const saveStockTransfer = async () => {
   if (!form.value.fromWarehouseId || !form.value.toWarehouseId || form.value.items.length === 0) {
-    alert('Please select both warehouses and add at least one item')
+    showWarning('Please select both warehouses and add at least one item')
     return
   }
 
   if (form.value.fromWarehouseId === form.value.toWarehouseId) {
-    alert('Source and destination warehouses must be different')
+    showWarning('Source and destination warehouses must be different')
     return
   }
 
@@ -603,7 +605,7 @@ const saveStockTransfer = async () => {
       expectedDate: form.value.expectedDate || null,
       notes: form.value.notes,
       items: form.value.items.map(item => ({
-        productId: item.productId,
+        productId: Number(item.productId),
         quantityTransferred: item.quantityTransferred
       }))
     }
@@ -632,7 +634,7 @@ const saveStockTransfer = async () => {
     await loadStockTransfers()
   } catch (error) {
     console.error('Failed to save stock transfer:', error)
-    alert('Failed to save stock transfer')
+    showError('Failed to save stock transfer')
   } finally {
     saving.value = false
   }
@@ -652,7 +654,7 @@ const approveStockTransfer = async (id: number) => {
     await loadStockTransfers()
   } catch (error) {
     console.error('Failed to approve stock transfer:', error)
-    alert('Failed to approve stock transfer')
+    showError('Failed to approve stock transfer')
   }
 }
 
@@ -670,7 +672,7 @@ const shipStockTransfer = async (id: number) => {
     await loadStockTransfers()
   } catch (error) {
     console.error('Failed to ship stock transfer:', error)
-    alert('Failed to ship stock transfer')
+    showError('Failed to ship stock transfer')
   }
 }
 
@@ -688,7 +690,7 @@ const receiveStockTransfer = async (id: number) => {
     await loadStockTransfers()
   } catch (error) {
     console.error('Failed to receive stock transfer:', error)
-    alert('Failed to receive stock transfer')
+    showError('Failed to receive stock transfer')
   }
 }
 
@@ -706,7 +708,7 @@ const completeStockTransfer = async (id: number) => {
     await loadStockTransfers()
   } catch (error) {
     console.error('Failed to complete stock transfer:', error)
-    alert('Failed to complete stock transfer')
+    showError('Failed to complete stock transfer')
   }
 }
 
@@ -724,7 +726,7 @@ const cancelStockTransfer = async (id: number) => {
     await loadStockTransfers()
   } catch (error) {
     console.error('Failed to cancel stock transfer:', error)
-    alert('Failed to cancel stock transfer')
+    showError('Failed to cancel stock transfer')
   }
 }
 
