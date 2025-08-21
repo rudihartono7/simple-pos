@@ -15,7 +15,7 @@ namespace PosSystem.Services
         public async Task<DailySalesReport> GetDailySalesReportAsync(DateTime date, int? storeId = null)
         {
             var startDate = date.Date;
-            var endDate = startDate.AddDays(1);
+            var endDate = startDate.AddDays(2);
 
             var query = _context.Transactions
                 .Where(t => t.TransactionDate >= startDate && 
