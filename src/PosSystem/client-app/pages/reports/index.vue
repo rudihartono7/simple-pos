@@ -283,6 +283,230 @@
           </div>
         </div>
 
+        <!-- Sales Summary Report -->
+        <div v-else-if="selectedReportType === 'sales-summary'" class="p-6">
+          <!-- Daily Sales Overview -->
+          <div v-if="reportData.dailySales" class="mb-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Daily Sales Summary</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-blue-800">Total Sales</h4>
+                <p class="text-xl font-bold text-blue-900">
+                  {{ formatCurrency(reportData.dailySales.totalSales || 0) }}
+                </p>
+              </div>
+              <div class="bg-green-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-green-800">Transactions</h4>
+                <p class="text-xl font-bold text-green-900">
+                  {{ reportData.dailySales.totalTransactions || 0 }}
+                </p>
+              </div>
+              <div class="bg-purple-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-purple-800">Items Sold</h4>
+                <p class="text-xl font-bold text-purple-900">
+                  {{ reportData.dailySales.totalItemsSold || 0 }}
+                </p>
+              </div>
+              <div class="bg-yellow-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-yellow-800">Avg. Transaction</h4>
+                <p class="text-xl font-bold text-yellow-900">
+                  {{ formatCurrency(reportData.dailySales.averageTransactionValue || 0) }}
+                </p>
+              </div>
+              <div class="bg-red-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-red-800">Total Tax</h4>
+                <p class="text-xl font-bold text-red-900">
+                  {{ formatCurrency(reportData.dailySales.totalTax || 0) }}
+                </p>
+              </div>
+              <div class="bg-orange-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-orange-800">Total Discount</h4>
+                <p class="text-xl font-bold text-orange-900">
+                  {{ formatCurrency(reportData.dailySales.totalDiscount || 0) }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profit Margin Overview -->
+          <div v-if="reportData.profitMargin" class="mb-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Profit Analysis</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div class="bg-emerald-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-emerald-800">Total Revenue</h4>
+                <p class="text-xl font-bold text-emerald-900">
+                  {{ formatCurrency(reportData.profitMargin.totalRevenue || 0) }}
+                </p>
+              </div>
+              <div class="bg-rose-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-rose-800">Total Cost</h4>
+                <p class="text-xl font-bold text-rose-900">
+                  {{ formatCurrency(reportData.profitMargin.totalCost || 0) }}
+                </p>
+              </div>
+              <div class="bg-teal-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-teal-800">Gross Profit</h4>
+                <p class="text-xl font-bold text-teal-900">
+                  {{ formatCurrency(reportData.profitMargin.grossProfit || 0) }}
+                </p>
+              </div>
+              <div class="bg-indigo-50 p-4 rounded-lg">
+                <h4 class="text-sm font-medium text-indigo-800">Profit Margin</h4>
+                <p class="text-xl font-bold text-indigo-900">
+                  {{ (reportData.profitMargin.profitMarginPercentage || 0).toFixed(2) }}%
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Products -->
+          <div v-if="reportData.topProducts?.length > 0" class="mb-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Top Selling Products</h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Rank
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Product
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Category
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Quantity Sold
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Revenue
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="product in reportData.topProducts" :key="product.productId">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      #{{ product.rank }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {{ product.productName }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ product.categoryName }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ product.quantitySold }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ formatCurrency(product.totalRevenue) }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Product Sales Details -->
+          <div v-if="reportData.productSales?.length > 0" class="mb-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Product Sales Details</h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Product Code
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Product Name
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Quantity Sold
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Total Revenue
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Average Price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="product in reportData.productSales" :key="product.productId">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {{ product.productCode }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {{ product.productName }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ product.quantitySold }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ formatCurrency(product.totalRevenue) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ formatCurrency(product.averagePrice) }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Product Profit Margins -->
+          <div v-if="reportData.profitMargin?.productProfitMargins?.length > 0">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Product Profit Margins</h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Product Name
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Revenue
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Cost
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Profit
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Margin %
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr v-for="product in reportData.profitMargin.productProfitMargins" :key="product.productId">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {{ product.productName }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ formatCurrency(product.revenue) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ formatCurrency(product.cost) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ formatCurrency(product.profit) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <span :class="{
+                        'text-green-600 font-semibold': product.marginPercentage >= 50,
+                        'text-yellow-600 font-semibold': product.marginPercentage >= 20 && product.marginPercentage < 50,
+                        'text-red-600 font-semibold': product.marginPercentage < 20
+                      }">
+                        {{ product.marginPercentage.toFixed(2) }}%
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <!-- Generic Table for other reports -->
         <div v-else-if="Array.isArray(reportData)" class="p-6">
           <div class="overflow-x-auto">

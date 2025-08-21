@@ -141,19 +141,17 @@ namespace PosSystem.Controllers
                 }
 
                 // Get multiple reports for a comprehensive summary
-                var dailySalesTask = _reportService.GetDailySalesReportAsync(endDate, storeId);
-                var productSalesTask = _reportService.GetProductSalesReportAsync(startDate, endDate, storeId);
-                var topProductsTask = _reportService.GetTopSellingProductsReportAsync(startDate, endDate, storeId, 5);
-                var profitMarginTask = _reportService.GetProfitMarginReportAsync(startDate, endDate, storeId);
-
-                await Task.WhenAll(dailySalesTask, productSalesTask, topProductsTask, profitMarginTask);
+                var dailySales = await _reportService.GetDailySalesReportAsync(endDate, storeId);
+                var productSales = await _reportService.GetProductSalesReportAsync(startDate, endDate, storeId);
+                var topProducts = await _reportService.GetTopSellingProductsReportAsync(startDate, endDate, storeId, 5);
+                var profitMargin = await _reportService.GetProfitMarginReportAsync(startDate, endDate, storeId);
 
                 var summary = new
                 {
-                    DailySales = await dailySalesTask,
-                    ProductSales = await productSalesTask,
-                    TopProducts = await topProductsTask,
-                    ProfitMargin = await profitMarginTask
+                    DailySales = dailySales,
+                    ProductSales = productSales,
+                    TopProducts = topProducts,
+                    ProfitMargin = profitMargin
                 };
 
                 return Ok(summary);
@@ -169,21 +167,25 @@ namespace PosSystem.Controllers
         {
             try
             {
-                var today = DateTime.Today;
+                var today = DateTime.UtcNow.Date;
                 var startOfMonth = new DateTime(today.Year, today.Month, 1);
+                startOfMonth = startOfMonth.ToUniversalTime();
                 
                 // Get today's sales and this month's data
                 var todaySalesTask = _reportService.GetDailySalesReportAsync(today, storeId);
                 var monthSalesTask = _reportService.GetProductSalesReportAsync(startOfMonth, today, storeId);
                 var topProductsTask = _reportService.GetTopSellingProductsReportAsync(startOfMonth, today, storeId, 5);
 
-                await Task.WhenAll(todaySalesTask, monthSalesTask, topProductsTask);
+                // Await all tasks concurrently
+                var todaySales = await todaySalesTask;
+                var monthSales = await monthSalesTask;
+                var topProducts = await topProductsTask;
 
                 var metrics = new
                 {
-                    TodaySales = await todaySalesTask,
-                    MonthSales = await monthSalesTask,
-                    TopProducts = await topProductsTask,
+                    TodaySales = todaySales,
+                    MonthSales = monthSales,
+                    TopProducts = topProducts,
                     Period = new { StartDate = startOfMonth, EndDate = today }
                 };
 
