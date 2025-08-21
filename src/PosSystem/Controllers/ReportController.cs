@@ -172,14 +172,9 @@ namespace PosSystem.Controllers
                 startOfMonth = startOfMonth.ToUniversalTime();
                 
                 // Get today's sales and this month's data
-                var todaySalesTask = _reportService.GetDailySalesReportAsync(today, storeId);
-                var monthSalesTask = _reportService.GetProductSalesReportAsync(startOfMonth, today, storeId);
-                var topProductsTask = _reportService.GetTopSellingProductsReportAsync(startOfMonth, today, storeId, 5);
-
-                // Await all tasks concurrently
-                var todaySales = await todaySalesTask;
-                var monthSales = await monthSalesTask;
-                var topProducts = await topProductsTask;
+                var todaySales = await _reportService.GetDailySalesReportAsync(today, storeId);
+                var monthSales = await _reportService.GetProductSalesReportAsync(startOfMonth, today, storeId);
+                var topProducts = await _reportService.GetTopSellingProductsReportAsync(startOfMonth, today, storeId, 5);
 
                 var metrics = new
                 {
