@@ -314,6 +314,17 @@
         </div>
       </div>
     </div>
+
+    <!-- Receipt Print Component -->
+    <ReceiptPrint
+      v-if="printingTransaction"
+      ref="receiptPrintRef"
+      :transaction="printingTransaction"
+      :store-info="printingTransaction.store"
+      :user-info="printingTransaction.user"
+      @close="onReceiptClosed"
+      @printed="onReceiptPrinted"
+    />
   </div>
 </template>
 
@@ -330,7 +341,7 @@ interface Transaction {
   taxAmount: number
   finalAmount: number
   status: string
-  paymentMethod?: string,
+  paymentMethod?: string | undefined,
   payments?: Payment[],
   amountReceived?: number
   changeAmount?: number
@@ -383,6 +394,16 @@ const showRefund = ref(false)
 const refundTransaction = ref<Transaction | null>(null)
 const refundReason = ref('')
 const isProcessingRefund = ref(false)
+
+// Print functionality
+const printingTransaction = ref<Transaction | null>(null)
+const receiptPrintRef = ref()
+const storeInfo = ref({
+  name: 'Your Store Name',
+  address: '123 Main Street, City, State 12345',
+  phone: '+1 (555) 123-4567',
+  email: 'info@yourstore.com'
+})
 
 // Methods
 const formatCurrency = (amount: number): string => {
@@ -517,32 +538,32 @@ const viewTransaction = async (transaction: Transaction) => {
 }
 
 const printReceipt = async (transactionId: number) => {
+  console.log("print clicked")
   try {
-    const { token } = useAuth()
+    // Find the transaction
+    const transaction = transactions.value.find(t => t.id === transactionId)
+    if (!transaction) {
+      alert('Transaction not found')
+      return
+    }
+
+    // Load full transaction details if needed
+    await viewTransaction(transaction)
     
-    const response = await $fetch(`/api/print/receipt/${transactionId}`, {
-      method: 'POST',
-      body: {
-        format: 'PDF'
-      },
-      headers: {
-        Authorization: `Bearer ${token.value ?? ''}`
-      },
-      baseURL: config.public.apiBase
-    })
-    
-    if (response && typeof response === 'object' && 'filePath' in response) {
-      const printWindow = window.open(`${config.public.apiBase}${response.filePath}`, '_blank')
-      if (printWindow) {
-        printWindow.focus()
-        printWindow.onload = () => {
-          printWindow.print()
-        }
+    if (selectedTransaction.value) {
+      // Ensure paymentMethod is set
+      if (selectedTransaction.value.payments && !selectedTransaction.value.paymentMethod) {
+        selectedTransaction.value.paymentMethod = selectedTransaction.value.payments.map(p => p.paymentMethod).join(', ')
+      }
+      printingTransaction.value = selectedTransaction.value
+      // Open print preview
+      if (receiptPrintRef.value) {
+        receiptPrintRef.value.openPreview()
       }
     }
   } catch (error) {
-    console.error('Failed to print receipt:', error)
-    alert('Failed to print receipt')
+    console.error('Failed to prepare receipt for printing:', error)
+    alert('Failed to prepare receipt for printing')
   }
 }
 
@@ -656,6 +677,16 @@ const processRefund = async () => {
   } finally {
     isProcessingRefund.value = false
   }
+}
+
+// Print event handlers
+const onReceiptPrinted = () => {
+  alert('Receipt printed successfully!')
+  printingTransaction.value = null
+}
+
+const onReceiptClosed = () => {
+  printingTransaction.value = null
 }
 
 // Initialize

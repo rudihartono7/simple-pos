@@ -152,13 +152,7 @@
                   >
                     <Icon name="heroicons:play" class="h-4 w-4" />
                   </button>
-                  <button
-                    v-if="transaction.status === 'Completed'"
-                    @click="printReceipt(transaction.id)"
-                    class="text-purple-600 hover:text-purple-900"
-                  >
-                    <Icon name="heroicons:printer" class="h-4 w-4" />
-                  </button>
+
                   <button
                     v-if="transaction.status === 'Completed'"
                     @click="refundTransaction(transaction)"
@@ -251,6 +245,8 @@
         </div>
       </div>
     </div>
+
+
   </div>
 </template>
 
@@ -475,35 +471,10 @@ const resumeTransaction = async (transaction: Transaction) => {
   }
 }
 
-const printReceipt = async (transactionId: number) => {
-  try {
-    const { token } = useAuth()
+// Receipt printing state
 
-    const response = await $fetch(`/api/print/receipt/${transactionId}`, {
-      method: 'POST',
-      body: {
-        format: 'PDF'
-      },
-      headers: {
-        Authorization: `Bearer ${token.value ?? ''}`
-      },
-      baseURL: config.public.apiBase
-    })
 
-    if (response && typeof response === 'object' && 'filePath' in response) {
-      const printWindow = window.open(`${config.public.apiBase}${response.filePath}`, '_blank')
-      if (printWindow) {
-        printWindow.focus()
-        printWindow.onload = () => {
-          printWindow.print()
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Failed to print receipt:', error)
-    showError('Failed to print receipt')
-  }
-}
+
 
 const refundTransaction = async (transaction: Transaction) => {
   if (!confirm(`Are you sure you want to refund transaction ${transaction.transactionNumber}?`)) {
